@@ -1,0 +1,69 @@
+\documentclass[
+    nolot,
+    color,   % Enables colorful typesetting. Replace with
+             % `monochrome`, if you are going to print the
+             % thesis on a monochromatic printer.
+	table,   % Causes the coloring of tables. Replace with
+             % `notable` to restore plain tables.
+    twoside, % Enables double-sided typesetting. Replace
+             % with `oneside`, if you are going to print
+             % your thesis on only one side of the paper.
+    % More options are listed in the class documentation
+    % available at <https://www.ctan.org/pkg/fithesis>.
+]{fithesis/fithesis3}
+\bibliographystyle{plain}
+\usepackage[english]{babel} % By using `czech` or `slovak`
+% instead of `english`, you can typeset the entire thesis
+% in either Czech or Slovak, respectively. Changing the
+% language requires a clean compilation; click `recompile
+% from scratch`, when Overleaf raises an error.
+\usepackage{import}
+\thesissetup{
+	university    = mu,
+	faculty       = fi,
+    type          = mgr,
+    author        = Bc. Linda Hansliková,
+    gender        = f,
+    advisor       = {RNDr. Martin Stehlík, Ph.D.},
+    title         = {The Categorization of the Darkweb},
+    TeXtitle      = {The Categorization of the Darkweb},
+    keywords      = {Web Application, Dark-web, Python, RestApi, Django REST, TypeScript, React, Redux, d3 Graph},
+    TeXkeywords   = {Web Application, Dark-web, Python, RestApi, Django REST, TypeScript, React, Redux, d3 Graph},
+    assignment    = {}
+}
+\thesislong{abstract}{	
+	In a time where time is more precious than money it is crucial for people to accomplish a task as quick as possible. When creating various web-sites, the Kentico Enterprise Marketing Solution (KEMS) is a helpful tool to save time and therefore money. It is a content management system (CMS) which allows clients to create and manage their web-sites using a single user interface (UI). This thesis is about adding an extension to the said system which allows administrators to manage their site from their smartphones. The functionality implemented should reflect the basic needs of an administrator \linebreak[4]  of the KEMS. The extension consists of two parts: the custom web application programming interface (API) and the mobile application (app). The custom web API (CAPI) was leveraged to call the Kentico API (KAPI) and retrieve data and the mobile app was used as a gateway for the user and the CAPI.
+}
+\thesislong{thanks}{
+	My thanks go to my adviser RNDr. Martin Stehlík, Ph.D. for allowing me to proceed with this
+topic, for his advice and patience. 
+
+}
+
+% The beginning of the document
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{wrapfig}
+\usepackage{sidecap}
+\usepackage[toc,page]{appendix}
+
+\usepackage{listings}
+\lstdefinestyle{sharpc}{language=[Sharp]C, basicstyle=\ttfamily\footnotesize, breaklines=true}
+\sidecaptionvpos{figure}{c}
+
+\begin{document}
+  \pagestyle{plain}
+  
+  \chapter{Introduction}
+  \import{chapters/}{introduction.tex}
+  \chapter{Analysis}
+  \import{chapters/}{analysis.tex}
+  \chapter{Implementation}\chaptermark{Implementation}
+  \import{chapters/}{Implementation.tex}
+  
+  \chapter{Conclusion}
+  \import{chapters/}{conclusion.tex}
+  \bibliography{bib_file}{}
+  \import{chapters/}{appendix.tex}
+\end{document}
