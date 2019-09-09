@@ -1,0 +1,11 @@
+This chapter will describe the design and implementation of the application which is composed of a representational state transfer (REST) application program interface (API) and a front-end web application (FE). 
+
+\section{API}
+Since the scraped pages of the dark-web were stored via ElasticSearch it was necessary to create a back-end application (BE) in order to perform various operations on the data-set before sending it to the FE. We decided to create a Python BE since the application had to be able to run on a UNIX system. 
+\subsection{Python and Django}
+Python is a widely used interpreted programming language known for its  readability and portability \cite{aboutPython}. It is open-source and is considered to have a extensive documentation and community available. Another huge advantage is its popularity in the science community. Because of this there is a great amount of useful libraries for research purposes such as NetworkX\footnote{A library used for creating and working with graphs.} \cite{NetworkX} or cylouvain \footnote{A library with a fast implementation of LA.} \cite{cylouvain}.  
+
+As we wanted to follow the REST architecture we decided to make use of the Django framework \cite{meetDjango}. It is responsible for tasks such as running the server or managing web requests. Another advantage of Django is its Django REST framework (DRF). DRF offers a convenient way for creating restful endpoints and responses. \cite{djangoRest}. Both frameworks are open-source again with extremely helpful documentation and community. 
+
+\subsection{Redis and caching}
+Because it takes approximately 60 seconds to retrieve about 90,000 pages from the database and circa 13 seconds to divide such a response into communities, caching had to be introduced. For that purpose Redis \cite{redis} is used. It is an open-source solution which we use as a key-value store. It supports  basic data structures as values, e.g. strings, numbers or sets but not custom objects. Since the API uses custom objects for both communities and pages, an object serializer had to be leveraged along with Redis. We decided not to write our own but to utilise the python pickle module \footnote{A module used for converting python objects to streams of bytes and vice versa.} \cite{pickle}. 
