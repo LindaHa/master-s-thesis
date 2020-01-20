@@ -3,19 +3,19 @@ This chapter describes the design and implementation of the application which is
 \section{API}
 The scraped pages of the dark-web were stored in ElasticSearch. We created a back-end application (BE) in order to perform various operations on the data-set before sending it to the FE. We decided to create a Python BE since the application had to be able to run on a UNIX system. 
 \subsection{Technology overview}
-Python is a widely used interpreted programming language known for  readability and portability \cite{aboutPython}. Python is open-source and is considered to have an extensive documentation and community available. Another advantage is the popularity of Python in the science community. There is a great amount of useful libraries for research purposes such as NetworkX\footnote{A library used for creating and working with graphs.} \cite{networkX} or cylouvain\footnote{A library with a fast implementation of LA.} \cite{cylouvain} because of this.  
+Python is a widely used interpreted programming language known for readability and portability \cite{aboutPython}. Python is open-source and is considered to have an extensive documentation and community available. Another advantage is the popularity of Python in the science community. There is a great amount of useful libraries for research purposes such as NetworkX\footnote{A library used for creating and working with graphs.} \cite{networkX} or cylouvain\footnote{A library with a fast implementation of LA.} \cite{cylouvain} because of this.  
 As we wanted to follow the REST architecture we decided to make use of the Django framework \cite{meetDjango}. It is responsible for tasks such as running the server or managing web requests. Another advantage of Django is its Django REST framework (DRF). DRF offers a convenient way for creating restful endpoints and responses \cite{djangoRest}. Both frameworks are open-source with helpful documentation and community. 
 
-Because it takes approximately 60 seconds to retrieve about 90,000 pages from the database and circa 13 seconds to divide such a response into communities, caching had to be introduced. For that purpose Redis \cite{redis} is used. It is an open-source solution which we use as a key-value store. It supports  basic data structures as values, e.g. strings, numbers or sets, but not custom objects. Since the API uses custom objects for communities, pages and links, an object serializer had to be leveraged along with Redis. We decided not to write our own but to utilise the Python pickle module\footnote{A module used for converting Python objects to streams of bytes and vice versa.} \cite{pickle}. 
+It took approximately 60 seconds to retrieve about 90,000 pages from the database and circa 13 seconds to divide such a response into communities. We considered this wait time to be too long. Therefore we decided to cache the data of the first response. For that purpose Redis \cite{redis} was used. It is an open-source solution which we use as a key-value store. It supports  basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for communities, pages and links, an object serializer had to be leveraged along with Redis. We decided not to write our own but to utilise the Python pickle module\footnote{A module used for converting Python objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was pickle is convenient, simple, and fulfilled all our needs for serializing.
 
 \section{Front-end}
 For users to be able to see the data acquired from the BE in a reasonable way a FE application was created. 
 \subsection{Technology overview}
-The probably most favoured programming language used for creating web applications \cite{jsGithut} is called JavaScript (JS) \cite{javaScript}. It is an interpreted language supported by all modern browsers. It is open-source and as such disposes of a big community with splendid documentation. It is not strongly typed and the code might therefore be complicated to read or navigate. For this reason the FE was written in TypeScript (TS) \cite{typeScript} which is a superset of JS with the advantage of being typed. There is a significant number of tools and libraries for implementing user interfaces (UI) in a clean and timely manner created for both JS and TS. One of such tools is the framework React.js (React) \cite{react}. React is one of the most favoured frameworks \cite{reactPopularity}. The advantages of using React are readable code, and improved performance by managing the re-rendering of page elements.
+The probably most favoured programming language used for creating web applications \cite{jsGithut} is called JavaScript (JS) \cite{javaScript}. It is an interpreted language supported by all modern browsers. It is open-source and as such disposes of a considerable community with convenient documentation. JS is not strongly typed and the code might therefore be complicated to read or navigate. For this reason the FE was written in TypeScript (TS) \cite{typeScript} which is a superset of JS with the advantage of being typed. There is a significant number of tools and libraries for implementing user interfaces (UI) in a clean and timely manner created for both JS and TS. One of such tools is the framework React.js \cite{react} (React). React is one of the most favoured JS frameworks \cite{reactPopularity}. The advantages of using React are readable code and improved performance by managing the re-rendering of page elements.
 
-Since the BE provides the FE with data which are supposed to be displayed to the user in an interactive way a proper mechanism for data-storing had to be found. We have chosen Redux \cite{redux} to handle the app state because of several reasons reasons: Redux is a single store approach. It is leveragedfrequently by the React.js community. It also provides a custom set of TS typings and provides the developers with easy to use debugging tools. 
+To achieve a satisfying UX the app needed to be interactive and obtain new or modified data frequently. Repeated requests to the BE would mean longer wait time for the user. However, a proper mechanism for data-storing would present a convenient solution to this issue and make the requests unnecessary. A JS library which handles the app state and works well with TS and React is called Redux.js \cite{redux} (Redux). Redux is a single store approach. This ensures easy hydration\footnote{The process of an object being provided with information}. Redux also provides a custom set of TS typings and provides the developers with easy to use debugging tools. Another advantage of this library is the documentation.
 
-Another important part of this FE is the visualization of the graph built on the data sent from the BE. This feature is built using the react-d3-graph library \cite{reactD3Graph} which is 
+The visualization of the web graph alone was realized using the react-d3-graph library \cite{reactD3Graph} (RD3). RD3 is 
 an implementation of the library d3.js \cite{d3} made more convenient for the use with React.js. 
 
 \subsection{User interface}
@@ -23,7 +23,7 @@ After the application is loaded the UI is composed of a header with the name of 
 
 The DD  sets the mode according to which the pages are grouped into communities. There are two modes available, link-mode and category-mode. If link-mode is selected, the pages are divided depending on the connections between them only. If category-mode is selected, the pages are divided into groups by categories. The pages in the groups are further divided into communities according to links between them, as if in link-mode. 
 
-For the purpose of filtering nodes according to a search phrase an input field with a submit button was placed underneath the DD. The last element shown is an indicator of the current level - how many times the user zoomed into a community.  The indicator has a zoom-out button placed next to it.
+For the purpose of filtering nodes according to a search phrase an input field with a submit button was placed underneath the DD. The last element shown is an indicator of the current level - how many times the user zoomed into a community. The indicator has a zoom-out button placed next to it.
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{Images/ZeroLevelGraphBasic.png}
@@ -31,26 +31,29 @@ For the purpose of filtering nodes according to a search phrase an input field w
   \label{zeroLevelGraphBasic}
 \end{figure} 
 
-The moment the data is retrieved from the BE the loader gets replaced for a graph which represents the communities the pages are partitioned into or the pages themselves and the links between them. Each node is displayed as a pie chart of categories of the pages belonging to the community represented by the node (CRN) or the page itself. There also might be a mock-community visible containing isolated nodes which cannot be zoomed into. It is possible for a level to depict communities and pages at once. 
+The moment the data is retrieved from the BE the loader gets replaced for a graph. The graph-nodes represent either the communities the pages are partitioned into or the pages themselves.  If the graph contains any isolated nodes (isolates) a mock-community is displayed containing all isolates. This community cannot be zoomed into. A community node is depicted as a pie chart. The individual sectors of the pie chart represent the categories of the pages belonging into the community [picture]. A single page is represented as a square [picture]. The colour of the square corresponds to the category of the page. It is possible for a level to depict communities and pages at once. The links between the nodes visualize the links between pages or communities. 
 
 After single-clicking a node additional information is exampled in the sidebar.The details vary depending on whether the node is representing a community or a single page.  
 The details of an individual page are as follows: 
 \begin {description}
 	\item [Url] which also serves as a unique identificator of the page. 
-	\item [Category] of the page. Each page belongs to one category.
+	\item [Category] of the page. Each page belongs to exactly one category.
 	\item[Links] to other pages displayed as a list of url addresses. There are up to ten links visible in the sidebar. The remaining links, if any, are downloadable in a text file. 
-	\item[Content] of the page if it is available. If the content is too long to be disclosed in the sidebar it is again downloadable in a text file.
+	\item[Content] of the page if it is available. If the content is too long to be disclosed in the sidebar it is downloadable in a text file.
 \end{description}
-
+[picture]
 
 The details of a community consist of  grouped information of its pages and include the following:
 \begin {description}
 	\item [Category composition] which is aggregated from the categories of all the pages of the community. Each category is represented by its name and the percentage of its relevance in the community.
-	\item [Page url] addresses (urls) belonging into the community. There are up to ten urls visible in the sidebar. The remaining pages, if any, are downloadable in a text file. 
+	\item [Page url] addresses (urls) of members belonging into the community. There are up to ten urls visible in the sidebar. The remaining urls, if any, are downloadable in a text file. 
 	\item[Urls count]represents the number of all the pages belonging into the community. 
 \end{description}
+[picture]
 
-The CRN needs to be double-clicked in order to zoom into a it to view its sub-communities. If the current level is higher than zero a button for zooming out appears next to the level indicator. It is shown in figure \ref{levelIndicatorWithButton}.
+In case of the need of further information a link can be clicked. If clicked, a pop-up window with detail-options is displayed. Details may include the title, links, category and content of pages, depending on the user selection. Urls are present by default.  After selecting the needed options and clicking the download button, a text file with the desired information is downloaded. The page or community-members with their details are depicted in json format.
+
+A graph node representing a community can be double clicked. After doing so,  The CRN needs to be double-clicked in order to zoom into it to view its sub-communities. If the current level is higher than zero a button for zooming out appears next to the level indicator. It is shown in figure \ref{levelIndicatorWithButton}.
 \begin{figure}[ht!]
   \centering
   \includegraphics{Images/levelIndicatorWithButton.png}
