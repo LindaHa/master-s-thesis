@@ -20,39 +20,89 @@ For users to be able to see the data acquired from the BE in a reasonable way a 
 \subsection{User interface}
 We designed the UI the following way. 
 
-After the application is loaded the UI is composed of a \textit{header} with the name of the application \textit{Dark web categorization}, a \textit{loader} and a \textit{sidebar} on the right hand side. The \textit{sidebar} contains several \textit{input fields} and \textit{buttons} in a column as can be viewed in Figure \ref{zeroLevelGraphBasic}. At the very top of the \textit{sidebar} a \textit{drop-down button} (DD) is present. 
-
-The DD sets the mode according to which the pages are grouped into communities. There are two modes available, \textit{link-mode} and \textit{category-mode}. If \textit{link-mode} is selected, the pages are divided by the LA\ref{louvainAlgorithm} depending on the connections between them only. If \textit{category-mode} is selected, the pages are divided into groups by categories. The pages in the groups are further divided into communities according to links between them, as if in \textit{link-mode}. 
-
- An \textit{input field} with a \textit{submit button} was placed underneath the DD for the purpose of filtering nodes according to a search phrase. The last element shown is an indicator of the current level - how many times the user zoomed into a community. The indicator has a \textit{zoom-out button} placed next to it.
+After the application is loaded the UI is composed of a \textit{header} with the name of the application \textit{Dark web categorization}, a \textit{loader} and a \textit{sidebar} on the right hand side. The application resembles at this point the image in Figure \ref{zeroLevelGraphBasic}.
 \begin{figure}[ht!]
   \centering
-  \includegraphics[width=\textwidth]{Images/ZeroLevelGraphBasic.png}
-  \caption{The basic view of the app with a selected community and its details.}
+  \includegraphics[width=\textwidth]{Images/basic_view.png}
+  \caption{The view after the application has loaded.}
   \label{zeroLevelGraphBasic}
 \end{figure} 
 
-The moment the data is retrieved from the BE the \textit{loader} gets replaced for a graph. The graph-nodes represent either the communities the pages are partitioned into or the pages themselves.  If the graph contains any isolated nodes (isolates) a \textit{mock-community} is displayed containing all isolates. This community cannot be zoomed into. A community node is depicted as a \textit{pie chart}. The individual sectors of the \textit{pie chart} represent the categories of the pages belonging into the community [picture]. A single page is represented as a square [picture] because it was otherwise difficult to differentiate between a single page and a small community of only one category. The colour of the square corresponds to the category of the page. It is possible for a level to depict communities and pages at once. The links between the nodes visualize the links between pages or communities. 
+The \textit{sidebar} contains several \textit{input fields} and \textit{buttons} in a column. At the very top of the \textit{sidebar} a \textit{drop-down button} (DD) is present. 
 
-After single-clicking a node additional information is exampled in the \textit{sidebar}.The details vary depending on whether the node is representing a community or a single page.  
+The DD sets the mode according to which the pages are grouped into communities. There are two modes available, \textit{link-mode} and \textit{category-mode} as can be seen in Figure\ref{modeDropdown}. If \textit{link-mode} is selected, the pages are divided by the LA\ref{louvainAlgorithm} depending on the connections between them only. If \textit{category-mode} is selected, the pages are divided into groups by categories. The pages in the groups are further divided into communities according to links between them, as if in \textit{link-mode}. 
+\begin{figure}[ht!]
+  \centering
+  \includegraphics{Images/mode_dropdown.png}
+  \caption{The DD for the selection of the grouping-mode.}
+  \label{modeDropdown}
+\end{figure} 
+
+ An \textit{input field} with a \textit{submit button} was placed underneath the DD for the purpose of filtering nodes according to a search phrase as can be seen in Figure\ref{filterNodesElement}.
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Images/filter.png}
+  \caption{The input field with submit button for filtering.}
+  \label{filterNodesElement}
+\end{figure}   
+
+The last element shown is an indicator of the current level - how many times the user zoomed into a community. The indicator has a \textit{zoom-out button} placed next to it.
+
+The moment the data is retrieved from the BE the \textit{loader} gets replaced for a graph. The graph-nodes represent either the communities the pages are partitioned into or the pages themselves.  If the graph contains any isolated nodes (isolates) a \textit{mock-community} is displayed containing all isolates. This community cannot be zoomed into. A community node is depicted as a \textit{pie chart}. The individual sectors of the \textit{pie chart} represent the categories of the pages belonging into the community. This is portrayed in Figure\ref{communityNodeRepresentation}. It was difficult to distinct between a small community of only one category and page nodes. A page node is therefore differentiated from a community node by depicting the node as a square shaped symbol. The colour of the square corresponds to the category of the page. An example of a page is illustrated in Figure\ref{pageNodeRepresentation}. It is possible for a level to depict communities and pages at once. The links between the nodes visualize the links between pages or communities. 
+
+\begin{figure} 
+  \begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.7\textwidth]{Images/community_node.png}
+    \caption{The~representation of a~community node. The~individual sectors of the~pie-chart illustrate the~category-composition in the community.}
+    \label{communityNodeRepresentation}
+  \end{minipage} \hfill
+  \begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.7\textwidth]{Images/page_node.png}
+    \caption{The~representation of a~page node. The~colour of the~square symbolizes the~category of the~page.}
+    \label{pageNodeRepresentation}
+  \end{minipage} 
+\end{figure} 
+After single-clicking a node additional information is exampled in the \textit{sidebar}.The details vary depending on whether the node is representing a community or a single page. 
 The details of an individual page are as follows: 
 \begin {description}
 	\item [Url] which also serves as a unique identificator of the page. 
 	\item [Category] of the page. Each page belongs to exactly one category.
 	\item[Links] to other pages displayed as a list of url addresses. There are up to ten links visible in the sidebar. The remaining links, if any, are downloadable in a text file. 
-	\item[Content] of the page if it is available. If the content is too long to be disclosed in the sidebar it is downloadable in a text file.
+Figure\ref{sidebarPageDetails} contains a sidebar view with page details.
 \end{description}
-[picture]
 
-The details of a community consist of  grouped information of its pages and include the following:
+The details of a community consist of grouped information of its members and include the following:
 \begin {description}
 	\item [Category composition] which is aggregated from the categories of all the pages of the community. Each category is represented by its name and the percentage of its relevance in the community.
 	\item [Page url] addresses (urls) of members belonging into the community. There are up to ten urls visible in the sidebar. The remaining urls, if any, are downloadable in a text file. 
 	\item[Urls count]represents the number of all the pages belonging into the community. 
 \end{description}
-[picture]
+Figure\ref{sidebarPageDetails} contains a sidebar view with community details.
 
-In case of the need of further information a link, also present in the \textit{sidebar}, can be clicked. If clicked, a \textit{pop-up window} with detail-options is displayed. Details may include the \textit{title}, \textit{category}, \textit{links} and \textit{page-content}, depending on the user's selection. \textit{Urls} of the pages are present by default. After selecting the needed options and clicking the \textit{download button}, a \textit{text file} with the desired information is downloaded. The page or community-members with their details are depicted in JSON format. This functionality was required for the scenario of the user needing to download all available data about members of a specific community.
+\begin{figure}
+  \begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Images/community_sidebar.png}
+    \caption{The sidebar with details of the selected community.}
+   \label{sidebarCommunityDetails}
+  \end{minipage} \hfill
+  \begin{minipage}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Images/page_sidebar.png}
+    \caption{The sidebar with details of the selected page.}
+    \label{sidebarPageDetails}
+  \end{minipage} 
+\end{figure}
+
+In case of the need of further information a link, also present in the \textit{sidebar}, can be clicked. If clicked, a \textit{pop-up window} with detail-options is displayed. Details may include the \textit{title}, \textit{category}, \textit{links} and \textit{page-content}, depending on the user's selection. \textit{Urls} of the pages are present by default. The window can be seen in Figure\ref{detailsOptionsPopup}. After selecting the needed options and clicking the \textit{download button}, a \textit{text file} with the desired information is downloaded. The page or community-members with their details are depicted in JSON format. This functionality was required for the scenario of the user needing to download all available data about members of a specific community.
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{Images/options_popup.png}
+  \caption{The pop-up window with detail-options for selection. These options dictate which details will be included in the downloaded text file.}
+  \label{detailsOptionsPopup}
+\end{figure} 
 
 A graph node representing a community can be double clicked. After doing so, a new graph is shown. The data of this graph consists of the members of the clicked community. We call this process \textit{zooming}. In case the parent community contains too many sub-communities, it is displayed as a single community-node. The zooming-in or -out of communities adjusts the \textit{zoom-level}. This level is represented by a number and is visible below the \textit{node-filter}. If the current zoom level is more than zero, i.e. at least one community-node was double clicked, a button for zooming out appears next to the \textit{level indicator}. It is shown in Figure \ref{levelIndicatorWithButton}.
 \begin{figure}[ht!]
