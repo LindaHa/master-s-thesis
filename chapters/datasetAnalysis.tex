@@ -1,0 +1,48 @@
+The data set we were working with consisted of pages which had been scraped\footnote{Scraping is a method used for collecting data from web pages with automated software rather than doing so manually.} from the dark weband stored in Elasticsearch (ES) \cite{elasticSearch}. This chapter will describe the dark web, the Elasticsearch database, and the structure of the stored pages.
+
+The internet consists of networks from all over the world. The networks are connected and together they comprise a global network. The Internet can be divided into the clear web\ref{clearWeb}, and the deep net~\ref{deepWeb}.
+
+\section{Clear web} \label{clearWeb}
+The clear web, or Celarnet, represents approximately 4\% of the Internet. The content on the clear web is indexed by search engines and is publicly accessible. The users are identified by their IP addresses and are usually not anonymous unless some privacy tools are used. The most used browsers worldwide according to market share are Chrome, Safari and Firefox \cite{browserMarketShare}.
+
+\section{Deep web} \label{deebWeb}
+The deep web, or hidden web, represents approximately 96\% of the Internet. The content is not indexed by search engines and is not accessible publicly. Emails or medical information are examples of resources in the deep web. A user needs to be authorized to access this data. A portion of the deep web is the dark web, also called darknet. 
+
+\subsection{Dark web} \label{darkWeb}
+The dark web constitutes about 6.25\% of the deep web. Tor \cite{torIntro} or the Invisible Internet Project (I2P) \cite{i2pIntro} are two of the networks comprising the darknet. 
+
+The Tor network (Tor) is accessible through Tor browser or Tor proxy. Tor makes use of \textit{onion routing} (ORing) \cite{onionRouting}. ORing describes routing where each node, except for the originator and the target node, knows only its predecessor and successor. The originator chooses a list of nodes to create a circuit between itself and the target node. Nodes in this circuit are determining their successor leveraging public-key cryptography. For example, \textit{A} is the originator and \textit{D} the target node. \textit{A} creates a circuit consisting of itself and of nodes \textit{B}, \textit{C} and \textit{D}. \textit{A} sends a fixed-sized cell with encrypted information about the circuit nodes using their respective public keys and the information to \textit{B}. \textit{B} removes one layer of the cell using its private key in order to get the address of its successor. \textit{B} cannot remove an additional layer to the successor of \textit{C} because it lacks the private key of \textit{C}. \textit{B} sends the cell to \textit{C}. \textit{C} removes another layer and sends the cell to \textit{D}. \textit{D} removes the final layer and reads the information. Now \textit{D} sends the response in a similar manner back to \textit{A}. Determining the original source and target node is therefore difficult. ORing was introduced in the 1990s to ensure privacy. 
+
+I2P is another network of the dark web which anonymizes its traffic. 
+
+Both exampled browsers provide anonymous access to the clearnet as well as to the darknet. 
+
+The dark web is used for activities like accessing or publishing illegal or censored material, e.g. the Bible, whistle-blower secrets, or child porn. It is also used for trading with illegal goods, such as drugs or guns. Another way to use the dark web is to offer or order illegal services, for instance money laundering, hacking or murder.
+
+\section{Elasticsearch}  \label{Elasticsearch}
+ES is a distributed, open source search engine \cite{elasticSearch} and offers a fast full-text search. Another benefit of ES are documentation and supported tools, such as Logstash \cite{logstash} for processing of data or Kibana \cite{kibana} for the visualization of data. ES can be used as a NoSQL database. Such a database consists of indexes, documents and fields as opposed to tables, rows and columns of SQL databases.  One of the advantages of NoSQL databases is scalability, therefore they are suited for big amounts of data. 
+
+\section{The data set} \label{dataSet}
+The dark web pages were acquired via web scraping. The scraped pages belonged to two different networks - I2P  and Tor. Both networks provide anonymity for the user. The total number of pages was 221,844. Of those pages 212,851 were Tor pages and 8,993 I2P pages. The total number of unique domains was 5,178 of which 4,912 were from the Tor network and 266 were from the I2P network. 
+
+The fields of a page entry will be described in the following list~\ref{DWDataList}. Each description will include a concrete example from the database. Fields beginning with an underscore are assigned to every document implicitly.
+ \label{DWDataList}
+\begin {description}
+	\item[\_id] is a unique identifier. For example\\ \textit{2d622b6fba6f203d790fedbb4f47963e2366c7fd}.
+	\item[\_index] informs about the collection the document belongs to. For example \textit{tor}. 
+	\item[\_type] determines the type of the document. For example \textit{\_doc}.
+	\item[content] is the actual content of the page. For example \textit{Purple Kush – 10g – WackyWeed Menu    * Home   * Contact us   * About us }.
+	\item[content\_type] describes the type of the content. For example \textit{text/html; charset=UTF-8}.
+	\item[domain] of the url address. For example \textit{wacky2yx73r2bjys.onion}.
+	\item[h1] is the text with the h1 style. For example \textit{Purple Kush – 10g}.
+	\item[links] to other pages this page links to. For example \textit{\{\\
+  "link": "http://wacky2yx73r2bjys.onion/",\\
+  "link\_name": "Home"\\
+\}}.
+	\item[raw\_text] is similar to \textit{content}. It additionally may contain formatting elements such as \textit{\textbackslash n}. For example \textit{Purple Kush – 10g – WackyWeed Menu\textbackslash n\textbackslash n  * Home\textbackslash n  * Contact us\textbackslash n  * About us\textbackslash n }.
+	\item[raw\_title] is similar to title. It additionally may contain formatting elements. For example \textit{Purple Kush – 10g – WackyWeed}
+	\item[raw\_url] is the same as \textit{url}.
+	\item[title] of the page. For example \textit{Purple Kush – 10g – WackyWeed}.
+	\item[updated\_on] depicts the time when the document in the database was last updated. For example \textit{2019-10-22T19:41:09}.
+	\item[url] address of the page. For example \\ \textit{http://wacky2yx73r2bjys.onion/?product=purple-kush-10g}.
+\end{description}
