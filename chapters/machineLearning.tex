@@ -1,7 +1,7 @@
 \label{machineLearning}
 A part of this thesis was the categorization of the scraped pages. Categorization in this context means the process of assigning categories (labels) to pages. The data set at hand contained a vast amount of pages, as we discussed in chapter \ref{datasetAnalysis}. The manual categorization of this number of pages would therefore take too much time and in consequence was infeasible. An automatic system for text classification was required. A simple system with a list of words assigned to each label was introduced but was performing poorly. A more sophisticated tool for text categorization is machine learning. We decided to use supervised machine learning (ML).
 
-This chapter describes ML. Secondly, supervised and unsupervised learning, types of machine learning, are characterized. Lastly, neural networks and their attributes detailed.
+This chapter describes ML in general. Secondly, the main approaches of ML, reinforcement learning(RL), unsupervised learning (UL), and supervised learning (SL), are characterized.  The approach used in this thesis is SL.
  
 \section{Machine learning} \label{machineLearning}
 The term \textit{machine learning} was first introduced by Arthur Samuel. In his paper \textit{Some Studies in Machine Learning Using the Game of Checkers} \cite{machineLearningOriginal} he proved it is possible for a program to develop better game-related skills than the skills of the programmer of the program.
@@ -10,13 +10,15 @@ ML is the process in which an application develops the ability to perform a cert
 
 ML is used across various industries and fields. The need for automated analysis is increasing with the growing popularity of \textit{big data}\footnote{A data set too vast or complex for traditional or manual data processing.} \cite{bigDataExplained} \cite{bigDataPopularity}. ML is used widely with Big Data. Another use for ML is in the automotive industry. Cars with assisted parking or breaking, or self-driving cars are examples\cite{selfDrivingCars}. Also, ML is used frequently in games for a more natural game experience \cite{machineLearningGaming}. 
 
-There are several approaches in ML based on the different ways of training. We describe the three main approaches in the subsections following. Namely \textit{reinforcement learning} in subsection \ref{reinforcementLearning} (RL), \textit{unsupervised learning} (UL) in subsection \ref{unsupervisedLearning}, and \textit{supervised learning} (SL) in subsection \ref{supervisedLearning}. The approach used in this thesis was \textit{supervised learning}. 
+There are several approaches in ML based on the different ways of training. We describe the three main approaches in the subsections following. Namely \textit{reinforcement learning} in subsection \ref{reinforcementLearning}, \textit{unsupervised learning} in subsection \ref{unsupervisedLearning}, and \textit{supervised learning} in subsection \ref{supervisedLearning}. The approach used in this thesis was \textit{supervised learning}. 
 
 \subsection{Reinforcement learning} \label{reinforcementLearning}
 It is suitable to use RL if behaviours in dynamic environments are to be learned \cite{reinforcementLearningIntroduction}. A software agent receives an indication of the state of the environment. The agent then pics an action from a discrete set of agent actions. Next the state is modified by the action. The value of this modification is passed on as a scalar reinforcement signal to the agent. The objective for the agent is to maximize the long-run total of reinforcement signal values. This is achieved over time by leveraging a number of specialized algorithms together with methodical trial and error.
 
 \subsection{Unsupervised learning} \label{unsupervisedLearning}
-
+ UL is used when seeking common patterns or relationships in data. It is also commonly used when trying to find anomalies in data. UL in context of ML is inspired by the neurons in our brains and the way our brains learn without external instructions \cite{unsupervisedLearningIntroduction}. The software agent receives an unlabeled data set as input. The agent breaks the data down to critical components using specialized algorithms. It then identifies similarities and divides the data into groups. No feedback is involved.
 
 \subsection{Supervised learning} \label{supervisedLearning}
+SL is suitable to use for the classification of data. During training SL relies on labeled data \cite{machineLeraningApproaches}. The input of the software agent of SL is a labeled data set. The software agent divides the data---label pairs into a a training and test set randomly. The agent is to find a function with the data as input and the correct label as output. To achieve this the agent is trained on the training set and validated using the test set. After each run the accuracy and loss is computed and the function is modified with the goal to improve the future output. 
 
+Now we describe the approach used in this thesis. the agent consists This is achieved by training. During training a It then simplifies the data and reduces it to critical information using specialized algorithms.
