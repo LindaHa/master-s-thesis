@@ -1,7 +1,7 @@
 \label{machineLearning}
 A part of this thesis was the categorization of the scraped pages. Categorization in this context means the process of assigning categories (labels) to pages. The data set at hand contained a vast amount of pages, as we discussed in chapter \ref{datasetAnalysis}. The manual categorization of this number of pages would therefore take too much time and in consequence was infeasible. An automatic system for text classification was required. A simple system with a list of words assigned to each label was introduced but was performing poorly. A more sophisticated tool for text categorization is machine learning. We decided to use supervised machine learning (ML).
 
-This chapter describes ML in general. Secondly, the main approaches of ML, reinforcement learning(RL), unsupervised learning (UL), and supervised learning (SL), are characterized.  The approach used in this thesis is SL.
+This chapter describes ML in general. Secondly, the main approaches of ML, reinforcement learning(RL), unsupervised learning (UL), and supervised learning (SL), are characterized. Lastly we depict what an artificial neural network (ANN) is. The approach used in this thesis is an ANN using SL.
  
 \section{Machine learning} \label{machineLearning}
 The term \textit{machine learning} was first introduced by Arthur Samuel. In his paper \textit{Some Studies in Machine Learning Using the Game of Checkers} \cite{machineLearningOriginal} he proved it is possible for a program to develop better game-related skills than the skills of the programmer of the program.
@@ -21,4 +21,10 @@ It is suitable to use RL if behaviours in dynamic environments are to be learned
 \subsection{Supervised learning} \label{supervisedLearning}
 SL is suitable to use for the classification of data. During training SL relies on labeled data \cite{machineLeraningApproaches}. The input of the software agent of SL is a labeled data set. The software agent divides the data---label pairs into a a training and test set randomly. The agent is to find a function with the data as input and the correct label as output. To achieve this the agent is trained on the training set and validated using the test set. After each run the accuracy and loss is computed and the function is modified with the goal to improve the future output. 
 
-Now we describe the approach used in this thesis. the agent consists This is achieved by training. During training a It then simplifies the data and reduces it to critical information using specialized algorithms.
+\section{Artificial neural networks} \label{artificialNeuralNetworks}
+An ANN is a system inspired by the brains of humans. A brain is composed of components such as neurons. Neurons communicate with each other by passing information through synapses. The more often two neurons communicate the stronger the synapses between them are \cite{neuronsInBrain}. This results in a neuron prioritizing information passed by neurons in participating frequent communication. In an ANN there are neurons in layers. The neurons communicate via links of various relevance.
+
+
+The approach used in this thesis was \textit{supervised learning}
+
+ This is achieved by training. During training a It then simplifies the data and reduces it to critical information using specialized algorithms.
