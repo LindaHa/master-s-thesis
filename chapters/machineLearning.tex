@@ -51,7 +51,7 @@ Pooling layers (PoolL) reduce the size of the input by down-sampling. The proced
 
 A simple example case of max-pooling is shown in figure \ref{maxPoolingVisualization}. In the beginning the upper left corner of the filter is set to be in the upper left corner of the input which is the red part of the image. The maximum value from the values \textit{1; 1; 5; 6;} is \textit{6}. The filter therefore returns the red result \textit{6}. Next the upper left corner of the filter moves two pixels to the right. It now occupies the green part of the input image. It again performs the max-pooling operation. It is not possible for the filter to slide right anymore as the end of the input was reached. The filter is therefore returned to the beginning of the line and moved two pixels down into the yellow portion. After returning the yellow result the filter slides two pixels to the right and once more return the maximum value. It is not possible to move the filter right nor down. The Max-pooling now is finished an the result is the square on the right.
 \subsection{Dense layer}\label{denseLayers}
-DnsLs are well suited classification tasks. Each neuron in a dense layer (DnsL) is directly connected to all the neurons from the previous layer as well as to all neurons in the next layer \cite{CNN}. DnsLs are therefore also called fully connected layers. The advantage of a DnsL is every output of every neuron of the previous layer is processed. The outcome ${z^l_n}$ for neuron ${n^l}$  is enumerated as a multiplication of two matrices \textit{w} and \textit{x} with the formula \[{z^l_{n}}=w^l_n  x^l + b^l_n\]. Where ${n^l}$ is a node belonging to layer ${l}$. Weight ${w^l_n}$ are all weights of direct connections into neuron ${n^l}$ and \textit{x} are all inputs of said connections into neuron ${n^l}$. Notation ${b^l_n}$ symbolizes the bias of node ${n^l}$. This is visualized in figure \ref{denseLayerVisualization}. The main disadvantage of DnsLs is the number of input arguments.
+DnsLs are well suited classification tasks. Each neuron in a dense layer (DnsL) is directly connected to all the neurons from the previous layer as well as to all neurons in the next layer \cite{CNN}. DnsLs are therefore also called fully connected layers. The advantage of a DnsL is every output of every neuron of the previous layer is processed. The outcome ${z^l_n}$ for neuron ${n^l}$  is enumerated as a multiplication of two matrices \textit{w} and \textit{x} with the formula \[{z^l_{n}}=w^l_n  x^l + b^l_n~\cite{neuronFormula}\]. Where ${n^l}$ is a node belonging to layer ${l}$. Weight ${w^l_n}$ are all weights of direct connections into neuron ${n^l}$ and \textit{x} are all inputs of said connections into neuron ${n^l}$. Notation ${b^l_n}$ symbolizes the bias of node ${n^l}$. This is visualized in figure \ref{denseLayerVisualization}. The main disadvantage of DnsLs is the number of input arguments.
 \begin{SCfigure}
   \includegraphics[width=0.5\textwidth]{Images/denseLayer.png}
   \caption[rightcaption]{The visible portion of this network consists of a DnsL ${l^1}$. This layer is composed of two neurons, ${n^1_0}$ and ${n^1_1}$ and their corresponding biases ${b^1_0}$ and ${b^1_1}$. Each neuron receives two inputs ${x^1_{0}}$ and ${x^1_{1}}$ with weights ${w^1_{00}}$, ${w^1_{01}}$, ${w^1_{10}}$, and ${w^1_{11}}$ respectively. The operation the neurons of the DnsL perform is now described on neuron ${n^1_{0}}$. Neuron ${n^1_{0}}$ computes the outcome ${z^1_{00}}$ as 
@@ -64,7 +64,22 @@ which is broken down to ${w^1_{00}}$~$\cdot$~${x^1_{0}}$~+~${w^1_{01}}$~$\cdot$~
 
 
 \subsection{Activation function}\label{activationFunction}
-(AcF)
+An activation function (AcF) is used to modify the output of a neuron most commonly in a non-linear way in order to limit the amplitude of the output of a neuron \cite{activationFunction}. The output of an activation function is called \textit{unit's activation} or just \text{activation}. There are many types of AcFs. In this thesis we used the AcF called \textit{rectified linear unit} (ReLU) and \textit{softmax}.
+
+\textbf{ReLU} is an AcF used in multilayer networks \cite{ReLU}. The function itself is shown in figure \ref{reluImage}. It is expressed as 
+\[\sigma(x)= \begin{cases}
+    0, & \text{for } x\leq 0\\
+    x, & \text{for } x > 0
+\end{cases}~\cite{ReLU}\] ~where $\sigma$ represents ReLU. ReLU is used for its reduction of activation since only positive input values are having a non-zero output. Another advantage is information of positive input values is not lost.
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Images/ReLUFunction.png}
+  \caption{The ReLU AcF from the Multi-classification of Brain Tumor Images using Deep Neural Network \cite{reluImage} article.} 
+  \label{reluImage}
+\end{figure} 
+
+\textbf{Softmax} is an AcF leveraged for the designation of probabilities of an input belonging to beforehand given labels \cite{machineLeraningApproaches}. The activation is a vector of numbers each between 0 and 1. Each number represents the probability of the input belonging to the current label.  In our case labels were categories of pages.
+
 \subsection{Loss function}\label{lossFunction}
 (LsF)
 \subsection{Backward propagation of error}\label{backpropagation}
