@@ -66,9 +66,9 @@ LA is favoured for its simplicity, speed and accuracy. Since its introduction, i
 
 
 \section{Leiden algorithm} \label{leidenAlgorithm}
- LeA is another algorithm for community detection on large graphs. The authors of LeA claim LA to have a major flaw \cite{leidenAlgorithm}. LA may detect badly connected or internally disconnected communities\footnote{It is not possible to form a connected component from nodes of an internally disconnected community.}. The latter phenomenon occurs when a bridge-node\footnote{A node acting as a bridge between two or more connected components otherwise not connected between each other.} of one community is assigned to another community and the remaining nodes are not. LeA is based on LA and eliminates the before mentioned problems of LA. 
+ LeA is another algorithm for community detection on large graphs. The authors of LeA claim LA to have a major flaw \cite{leidenAlgorithm}. LA may detect badly connected or internally disconnected communities\footnote{It is not possible to form a connected component from nodes of an internally disconnected community.}. The latter phenomenon occurs when a bridge-node\footnote{A node connecting two or more connected components otherwise not connected between each other.} of one community is assigned to another community and the remaining nodes are not. LeA is based on LA and eliminates the before mentioned problems of LA. 
 
-Next we outline the principle of the LeA. The detailed steps are portrayed in figure \ref{leidenVisualization} \cite{leidenVisualization}. The steps are compared to the steps depicted in the characterization of LA \ref{louvainAlgorithmPrinciple}. 
+Next we outline the principle of the LeA. The detailed steps are portrayed in figure \ref{leidenVisualization} \cite{leidenVisualization}. The steps are compared to the steps depicted in the characterization of LA \ref{louvainAlgorithmPrinciple} and described using the visualization.
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{Images/leidenVisualization.png}
@@ -79,12 +79,30 @@ Next we outline the principle of the LeA. The detailed steps are portrayed in fi
 \begin{enumerate}[label=\alph*)]
   \label{leidenAlgorithmPrinciple}
   \item This phase corresponds to step \ref{LA1}. from the LA description. 
+  \begin{itemize}
+    \item \textit{Part a)}. Each node is assigned a community. This is portrayed by the nodes being of different colours.
+  \end{itemize} 
     \label{LeAa}
   \item This phase is called \textbf{move nodes} and corresponds to steps \ref{LA2}., \ref{LA3}., and \ref{LA4}. from the LA description. 
+  \begin{itemize}
+    \item \textit{Part b)}. The nodes are divided into three communities represented by the colours of the nodes - a red, a blue and a green one. 
+  \end{itemize} 
     \label{LeAb}
   \item This phase is called \textbf{refine}. Steps \ref{LA1}. and \ref{LA2}. are applied to nodes within communities. This results into the further partitioning of communities into sub-communities.
+  \begin{itemize}
+    \item \textit{Part c)}. The communities are refined within communities. The red community was refined into two sub-communities - a red-red one and a red-green one. The blue community was not refined further. The green was refined into a green-range one and a green-purple one. 
+  \end{itemize} 
     \label{LeAc}
   \item This phase is called \textbf{aggregation} and corresponds to step \ref{LA5}. from the LA description but sub-communities are treated as communities. Nodes created from sub-communities within one community are considered to belong to the same community. This consideration is taken into account in further iterations. Otherwise, these nodes are regarded as individual nodes. This practice prevents bridge-nodes to be appointed to a different community and so disconnect the former community.
+  \begin{itemize}
+    \item \textit{Part d)}. The sub-communities are considered nodes now. However, sub-communities from the same community are still considered to belong together. Therefore the colours of the nodes corresponds to the colours of the communities from the previous step. 
+  \end{itemize} 
     \label{LeAd}
 \end{enumerate}
-These steps are repeated until no further improvement in modularity can be achieved.
+These steps are repeated until no further improvement in modularity can be achieved. 
+
+Step \ref{LeAd} is in further iterations significant.  It is impossible to re-assign a bridge-node to a different community with LeA. But this may happen using LA. Now we demonstrate why on figure \ref{leidenVisualization} \textit{part f)}. 
+
+A bridge node in the blue community connecting the two smaller nodes is depicted. Let us call this bridge-node \textit{B}. With LeA, all blue nodes are still considered to be of the same community. And therefore they cannot be shifted into any neighbouring communities. Let us now assume we ran another iteration of LA over the graph in part \textit{f)}. The blue nodes are not considered belonging to the same community anymore. The nodes are viewed as unrelated neighbouring nodes. There is therefore a possibility for node \textit{B} to be assigned to the red community if higher modularity is achieved. This would leave the two smaller blue nodes disconnected. 
+
+In his thesis both LA and LeA were used.
