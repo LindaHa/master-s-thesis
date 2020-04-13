@@ -3,6 +3,10 @@ An application was developed in order to fulfill the goals of this thesis. One t
 
 This chapter first describes the implementation of the model for the categorization of the pages. Then the design and implementation of the application which is composed of a representational state transfer (REST) application program interface (API) and a front-end (FE) web application is detailed. 
 
+\section{Classification} \label{ClassificationDevelopment}
+\subsection{Technology overview} \label{ClassificationTechonologyOverview}
+\subsection{Implementation} \label{ClassificationImplementation}
+
 \section{Categorization}
 One part of this thesis was to categorize the scraped pages into categories depending on their content. 
 
@@ -143,4 +147,3 @@ The most basic files which only include string constants are situated in the fol
 The dispatching of actions enables the changing of the state via reducers situated in the \texttt{reducers} folders. The state is a single immutabe\footnote{The object cannot be adjusted directly. Instead, a new modified object is returned and the original one stays unmodified.} object and is used in the whole application. A \hypertarget{reducers}{reducer} is a pure function\footnote{The return value of a pure function is only dependent on its input values. A pure function has no side effects.} receiving the current state and the dispatched action as its arguments. It then returns the newly computed state. A reducer creates a new state only if the type of the given action is recognized. If not, the previous state is returned unmodified. The state object received or returned by the reducer does not need to be the entire state (app-state). A reducer may be responsible for just a part of the app-state. However, the root reducer is responsible for the whole app-state.
 
 The folders \texttt{components} contain files with React components. They define the skeleton of the UI with the specified behaviour. The folders \texttt{containers} hold files with React containers. A container is a file with access to the app-state. It is responsible for passing data to components. 
-
