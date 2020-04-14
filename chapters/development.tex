@@ -7,19 +7,36 @@ This chapter first describes the implementation of the model for the categorizat
 \subsection{Technology overview} \label{ClassificationTechonologyOverview}
 \subsection{Implementation} \label{ClassificationImplementation}
 
-\section{Categorization}
-One part of this thesis was to categorize the scraped pages into categories depending on their content. 
+\section{Clustering}\label{ClusteringDevelopment}
+One part of this thesis was to categorize the scraped pages into categories depending on their content. For this purpose both LA and LeA were used separately. These algorithms are characterize in sections \ref{louvainAlgorithm} and \ref{leidenAlgorithm} of chapter respectively. 
 
-\section{API}
+\subsection{Technology overview} \label{ClusteringTechonologyOverview}
+In the beginning we used the library \textit{NetworkX} \cite{networkX} for the graph creation. NetworkX is a Python library for the managing of complex networks. Python is further characterized in subsection \ref{technologyOverwiew}.The advantages of this library are convenient documentation. Also, the graphs of NetworkX cover many characteristics such as undirected and directed, or weighted edges. It is possible to filter isolates from the graph.  Another advantage is the availability of standard graph algorithms, including LA. However, the built LA implementation was too slow for the size of our data set. The built in LA didn't succeed to divide about 40,000 pages after 30 minutes. We therefore decided to use a different implementation. The \textit{cylouvain} library \textit{cylouvain} was introduced. 
+
+Cylouvain is a faster implementation of LA. The division of 90,275 pages into communities took about 18 seconds. The problem we faced with this implementation was the occasional occurrence of disconnected sub-communities of communities. Our new priority was therefore to adopt an implementation of LeA. The \textit{leidenalg} \cite{leidenalg} library was introduced.
+
+Leidenalg is an \textit{C++} implementation of the LeA exposed to python. This implementation takes about 6 seconds to partition the 90,275 pages into communities. Moreover, there are no disconnected sub-communities of communities. Leidenalg is built on the \textit{python-igraph} library. 
+
+Python-igraph (igraph) another library for the managing of complex networks. The advantage of this library the availability of the before mentioned implementation of the LeA. Another advantage is igraph disposes of an implementation of the LA. This implementation takes about 5 seconds to divide 90,275 pages into communities. Also, no disconnected sub-communities of communities are created. Therefore this implementation was also leveraged.
+
+The two utilized implementations are compared in the section \ref{clusteringEvaluation}.
+
+\subsection{Implementation} \label{ClusteringImplementation}
+The clustering is implemented in the back-end application described in the next section \ref{APIDevelopment}.
+
+\section{API}\label{APIDevelopment}
 The scraped pages of the dark-web were being stored in \textit{ElasticSearch}. We created a back-end application (BE) in order to perform various operations on the data-set before sending it to the FE. Such operations involve resource intensive processing of large volumes of data, and caching. We decided to create a Python BE. The reason behind this decision was the requirement for the application to function on a UNIX system. Other reasons are described in subsection~\ref{technologyOverwiew}. The requirements for the BE was the categorization of the nodes along with their division into groups. The groups were either represented by nodes of the same category or communities. The BE also needed functionality to return details for specific pages or groups if requested.
 \subsection{Technology overview}
 \label{technologyOverwiew}
 \textit{Python} is a widely used interpreted programming language known for readability and portability \cite{aboutPython}. Python is open-source and is considered to have an extensive documentation and community available. 
 
-Python is popular in the science community because it is easy to learn and has simple syntax. There is therefore a great amount of useful libraries for research purposes such as \textit{NetworkX}\footnote{A library used for creating and working with graphs.} \cite{networkX} or \textit{cylouvain}\footnote{A library with a fast implementation of LA.} \cite{cylouvain} because of this.  
+Python is popular in the science community because it is easy to learn and has simple syntax. There is therefore a considerable amount of useful libraries for research purposes such as \textit{NetworkX} or \textit{igraph}, both introduced in subsection \ref{ClusteringTechonologyOverview}.  
 As we wanted to follow the REST architecture we decided to make use of the \textit{Django} framework \cite{meetDjango}. It is responsible for tasks such as running the server or managing web requests. Another advantage of Django is its \textit{Django REST framework} (DRF). DRF offers a convenient way for creating restful endpoints and responses \cite{djangoRest}. Both frameworks are open-source with helpful documentation and community. 
 
 We had to solve performance issues. It took approximately 30 minutes to retrieve and categorize about 220,000 pages from the database and circa xxx seconds to divide such a response into communities. We considered this wait time to be too long. Therefore we decided to cache the data of the first response. For that purpose \textit{Redis} \cite{redis} was used. It is an open-source solution which we used as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages} and \textit{links}, an object serializer was leveraged along with Redis. We decided not to write our own but to utilise the Python \textit{pickle} module\footnote{A module used for converting Python objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of pickle. Pickle also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for Redis to store in an acceptable time. Pickle took xxx seconds to serialize xxx pages. The deserialization of the same number of pages took xxx seconds.
+
+\subsection{Implementation} \label{APIImplementation}
+
 
 \section{Front-end}
 For users to be able to see the data acquired from the BE in a reasonable way a FE application was created. The goal of this FE was to visualize the scraped pages in a graph. The pages or communities, and links from the BE were to depict nodes, and links of the graph respectively. The category of the pages or communities was to be readable from the graph. Additional information about the nodes needed to be displayed or retrieved on demand.
