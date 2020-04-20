@@ -1,10 +1,10 @@
 \label{developmentIntroduction}
-An application was developed and a CNN was trained in order to fulfill the goals of this thesis. One task of the application was to classify the scraped pages into categories. This was to be done depending on the content of the pages. The application performs the classification via the model created by the CNN. CNNs and ANNs are described in section \ref{artificialNeuralNetworks}. Another task was to provide a way to observe the structure of the pages, links between them, and their categories. This was achieved by detecting communities of a graph. Communities and how to detect them are described in chapter \ref{clustering}. One of the partner requirements was for the application to function on a UNIX system. Another requirement was a user friendly UI. Also, the option of retrieving all the available information about the pages was demanded. 
+An application was developed and a CNN was trained in order to fulfill the goals of this thesis. One task of the application was to classify the scraped pages into categories. This was to be done depending on the content of the pages. The application performs the classification via the model created by the CNN. CNNs and ANNs are described in section \ref{artificialNeuralNetworks}. Another task was to provide a way to observe the structure of the pages, links between them, and their categories. This was achieved by detecting communities of a graph. Communities and how to detect them are described in chapter \ref{clustering}. One of the partner requirements was for the application to function on a UNIX system. Another requirement was a user friendly UI. Also, the option for retrieving all the available information about the pages was demanded. 
 
 This chapter first describes the implementation of the model for the classification of the pages. Afterwards the implementation of the clustering is introduced. Then the design and implementation of the application which is composed of a representational state transfer (REST) application program interface (API) and a front-end (FE) web application is detailed. 
 
 \section{Classification} \label{ClassificationDevelopment}
-In order to categorize the pages depending on their content a CNN needed to be created. For that a project called \texttt{Categorization} was built. For the training of a CNN a suitable training and testing data set needed to be created. The desired output of the CNN was a model able to categorize the pages with a reasonable accuracy. This chapter describes the steps taken to achieve the listed goals and the technologies used.
+To categorize the pages depending on their content a CNN needed to be created. For that a project called \texttt{Categorization} was built. For the training of a CNN a suitable training and testing data set needed to be prepared. The desired output of the CNN was a model able to categorize the pages with a reasonable accuracy. This chapter describes the steps taken in order to achieve the listed goals along with the technologies used.
 
 \subsection{Technology overview} \label{ClassificationTechonologyOverview}
 The project was written in Python. \textit{Python} is a widely used interpreted programming language known for readability and portability \cite{aboutPython}. It is open-source and is considered to have an extensive documentation and community available. Python is popular in the science community because it is easy to learn and has simple syntax. There is therefore a considerable amount of useful libraries for research purposes such as \textit{Keras} described later in this subsection, or \textit{igraph} introduced in subsection \ref{ClusteringTechonologyOverview}.  
@@ -17,14 +17,14 @@ For the management of large matrices and vectors we used the library NumPy \cite
 
 To manipulate the data set efficiently the pandas library \cite{pandas} was adopted. Pandas is an open-source library used for the manipulation of data frame\footnote{A data frame is a two-dimensional structure resembling a common table. Data stored in columns contains values designated for the same purpose. } objects. It is possible to slice through, add data to, or remove data from the data frames. Also, data frames may be merged or reshaped. Supported file formats include CSV and excel spreadsheet (XLS) files.
 
-The CNN itself was created with the library Keras \cite{keras}. Keras is a library for the implementation of ML in Python. ML is closer characterized in the section \ref{machineLearning}. Keras supports the tokenization of text and the tools needed to create and train a CNN. The output model of the CNN can be used for the task it was trained for.
+The CNN itself was created with the library Keras \cite{keras}. Keras is a library for the implementation of ML in Python. ML is more closely characterized in the section \ref{machineLearning}. Keras supports the tokenization of text and the tools needed to create and train a CNN. The output model of the CNN can be used for the task it was trained for.
 
 \subsection{Learning data set} \label{LearningDatasetImplementation}
-A labeled data set for learning was needed. We therefore created a learning data set composed of a subset of the scraped pages. The pages were retrieved from the database with equivalent fetching functionality as is described in subsection \ref{APIImplementation}. Only one page with content of each domain from the Tor network was stored. 4,088 pages were obtained this way. These pages were with content exported into a CSV file and labeled manually. 13 categories were found. We will call this learning data set \textit{first samples} in a later chapter. The problem of this data set was some categories contained less than 100 pages. The training result for those categories were not satisfying. Detailed training results performed on various training data sets are shown in section \ref{classificationEvaluation}. 
+A labeled data set for learning was needed. We therefore created a learning data set composed of a subset of the scraped pages. The pages were retrieved from the database with equivalent fetching functionality as is described in subsection \ref{APIImplementation}. This functionality is located in the folder \texttt{Helpers}. Only one page with content of each domain from the Tor network was stored. 4,088 pages were obtained this way. These pages were with content exported into a CSV file and labeled manually. 13 categories were identified. We will call this learning data set \textit{first samples} in a later chapter. The problem of this data set was some categories contained less than 100 pages. The training result for those categories were not satisfying. Detailed training results performed on various training data sets are shown in section \ref{classificationEvaluation}. 
 
-By the merging of categories with less than 100 pages into bigger categories we achieved better training results. One category, \textit{Gambling}, could not be merged with other categories. Gambling was not related enough to any other category. We therefore enhanced Gambling with more pages from the database. This was possible because we found a domain with more than 200 pages with different content all associated to gambling. This data set contained 4.298 pages and 10 categories. We will further call this learning set \textit{enhanced samples}. However, a moral issue related to the naming conventions of the categories arose with this data set. 
+By the merging of categories with less than 100 pages into bigger categories we achieved better training results. One category, \textit{Gambling}, could not be merged with other categories as it was not related enough to any other category. We therefore enhanced Gambling with more pages from the database. This was possible because we found a domain with more than 200 pages with different content all associated to gambling. This data set contained 4.298 pages and 10 categories. We will further call this learning set \textit{enhanced samples}. However, a moral issue related to the naming conventions of the categories arose with this data set. 
 
-The final data set was created by further merging and renaming the categories. 9 categories were found. We will call this data set \textit{final samples}. The 9 categories detected are detailed in listing \ref{classificationCategories}.
+The final data set was created by further merging and renaming the categories. 9 categories were identified. We will call this data set \textit{final samples}. The 9 categories detected are detailed in listing \ref{classificationCategories}.
  \label{classificationCategories}
 \begin {description}
 	\item[Finance and Fraud] contained 665 pages. It included content about fake or stolen credit, debit and gift cards and bank accounts. Also crypto currency, counterfeit money, and money laundering was mentioned. Suspicious and illegal investment opportunities were offered as well.
@@ -38,29 +38,29 @@ The final data set was created by further merging and renaming the categories. 9
 \end{description}
 
 \subsection{Implementation} \label{ClassificationImplementation}
-The preprocessing of the learning data and the training of the CNN took place in the file \texttt{KerasModelDataset.ipynb}. 
+The preprocessing of the learning data and the training of the CNN takes place in the file \texttt{KerasModelDataset.ipynb}. 
 
-The learning data was loaded as a data frame. The data preprocessing was performed on the content of the pages. Non-English rows, also called documents, were removed. This was done by first removing non-numeric and non-alphabetical characters. Then the content was tokenized\footnote{A tool which divides a string into sub-strings.}. In this case the tokens represented words divided by spaces. The tokens were then compared to the English vocabulary of NLTK. According to the percentage of the English words composing the content the document was considered English or not. The threshold was 20\%. Non-English documents were removed from the data frame.
+The learning data are loaded as a data frame. The data preprocessing is performed on the content of the pages. Non-English rows, also called documents, are removed. This is done by first removing non-numeric and non-alphabetical characters. Then the content is tokenized\footnote{A tool which divides a string into sub-strings.}. In this case the tokens represent words divided by spaces. The tokens are then compared to the English vocabulary of NLTK. According to the percentage of the English words composing the content the document is considered English or non-English. The threshold of English documents is 20\%. Non-English documents are removed from the data frame.
 
-Next the labels had to be preprocessed. The labels were retrieved from the data frame by removing duplicates from the category column. Then a dictionary\footnote{A python dictionary is a hash table with keys and values.} with the category name as key and the index\footnote{An index in context of this chapter is an integer value corresponding to the position of an entry. It starts from 0.} as value was created. The indexes would be used as category aliases. 
+Next the labels need to be preprocessed. The labels are retrieved from the data frame by removing duplicates from the category column. Then a dictionary\footnote{A python dictionary is a hash table with keys and values.} with the category name as key and the index\footnote{An index in context of this chapter is an integer value corresponding to the position of an entry. It starts from 0.} as value is created. The indexes are used as category aliases. 
 
-Afterwards two empty lists were created, \texttt{texts} and \texttt{labels}. For each row of the data frame the content was appended to list \texttt{texts} and the category was converted to the corresponding alias and appended to the list \texttt{labels}. The text is associated with the corresponding label via the indexes in the lists.  This is explained on an example. The row on position $i$ contains content $T_i$ and the corresponding category $C_i$. Content $T_i$ is appended to \texttt{texts} and is on the $i$th position. The alias for category $C_i$ is $C^a_i$. Now $C^a_i$ is appended to \texttt{labels} and is also on the $i$th position.
+Afterwards two empty lists are created, \texttt{texts} and \texttt{labels}. For each row of the data frame the content is appended to list \texttt{texts} and the category is converted to the corresponding alias and appended to the list \texttt{labels}. The text is associated with the corresponding label via the indexes in the lists.  This is explained on an example. The row on position $i$ contains content $T_i$ and the corresponding category $C_i$. Content $T_i$ is appended to \texttt{texts} and is on the $i$th position. The alias for category $C_i$ is $C^a_i$. Now $C^a_i$ is appended to \texttt{labels} and is also on the $i$th position.
 
-Next an internal vocabulary was created from all words from \texttt{texts}. Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. Each entry of \texttt{texts} therefore corresponded to a vector of integers. All vectors were trimmed or padded to the same length of 1,000 integers. The list \texttt{texts} corresponded to a matrix. The matrix was stored in a list of matrices called \texttt{data}. The list \texttt{data} was split into a training and testing set. One fifth of \texttt{data}, meaning 3,457 entries, was randomly chosen to be the test set. The rest was the training data.
+Next an internal vocabulary is created from all words from \texttt{texts}. Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest is the training data.
 
-Each category alias in \texttt{labels} was assigned an index $i$. Each entry of the list was replaced by an OHV\footnote{A zero vector with one value being 1.} . The value 1 was on the $i$th position of the OHV. The length of the OHV corresponded to the number of categories. The list \texttt{labels} became a matrix after this modification, meaning a list of vectors.
+Each category alias in \texttt{labels} is assigned an index $i$. Each entry of the list is replaced by a one hot vector (OHV)\footnote{A zero vector with one value being 1.} . The value 1 is on the $i$th position of the OHV. The length of the OHV corresponds to the number of categories. The list \texttt{labels} becomes a matrix after this modification, meaning a list of vectors.
 
-The next step was the configuration of embeddings. Embeddings are outlined in subsection \ref{embeddingLayers}. An open source embedding matrix is available on the Stanford university web site \cite{embeddings}. However, using that matrix changed the learning results only marginally as opposed to training the embedding layer on our data. One of the reasons might be the vocabulary and the content syntax of the dark web being different from the vocabulary used in the trained embeddings file. We therefore decided not to use the trained embeddings.
+The next step is the configuration of embeddings. Embeddings are outlined in subsection \ref{embeddingLayers}. An open source embedding matrix is available on the Stanford university web site \cite{embeddings}. However, using that matrix changed the learning results only marginally as opposed to training the embedding layer on our data. One of the reasons might be the vocabulary and the content syntax of the dark web being different from the vocabulary used in the trained embeddings file. We therefore decided not to use the trained embeddings.
 
-The last step before the training itself was to create the shape of the CNN. The Keras documentation offers a sample of a CNN structure meant for text classification \cite{kerasCNNStructure}. We used this structure and figure \ref{structureOfCNN} depicts the structure composition. 
+The last step before the training itself is to create the shape of the CNN. The Keras documentation offers a sample of a CNN structure meant for text classification \cite{kerasCNNStructure}. We used this structure and figure \ref{structureOfCNN} depicts the structure composition. 
 
-The EmbLr received information about the vocabulary size, the number of words on each pages and the length of the output vectors. The vocabulary was limited to 20,000 most frequently occurring words. The number of words in the content of each page was limited to 1,000. The EmbLr therefore awaited an input of vectors with the length 1,000. The output of this layer would be embedding vectors with the length of 100. 
+The EmbLr receives information about the vocabulary size, the number of words on each page and the length of the output vectors. The vocabulary is limited to 20,000 most frequently occurring words. The number of words in the content of each page is limited to 1,000. The EmbLr therefore expects an input of vectors with the length 1,000. The output of this layer are embedding vectors with the length of 100. 
 
-The second layer was a ConvLr with 128 neurons and a kernel with the dimensions 5x5. The activation function of this layer was ReLU described in subsection {activationFunction}. Next was a PoolLr with filter dimensions of 5x5. The method used in the pooling layer was max-pooling. The following layer was a ConvLr followed by a PoolLr and another ConvLr all equivalent to the first layers of the same types. The seventh layer was a PoolLr also using the max-pooling method but with the filter dimensions equal to the input dimensions. Then a dense layer with 128 neurons and ReLU as the activation function followed. The last layer was a dense lauer with the activation function softmax. The number of neurons in this layer was the number of categories.
+The second layer is a 1D ConvLr with 128 neurons and a kernel with the dimensions 5x1. The activation function of this layer is ReLU described in subsection \ref{activationFunction}. Next a PoolLr with filter dimensions of 5x1 is prepared. The method used in the pooling layer is max-pooling. The next layer is a 1D ConvLr followed by a PoolLr and another 1D ConvLr all equivalent to the first layers of the corresponding types. The seventh layer is a PoolLr also using the max-pooling method but with the filter dimensions equal to the input dimensions. Then a dense layer with 128 neurons and ReLU as the activation function follows. The last layer is a dense layer with the activation function softmax. The number of neurons in this layer is the number of categories.
 
-Afterwards a model was fed the CNN and compiled. The configured loss function of the model was CCross. The desired metrics to be evaluated was the accuracy of the results. The optimizer used  was RMSprop. The model was then trained with training and testing data. The number of epochs was set to 20 and batch\_size was 128.
+Afterwards a Keras model is fed the CNN structure and compiled. The configured loss function of the model is CCross. The desired metrics to be evaluated is the accuracy of the results. The optimizer used  is RMSprop. The model is then trained with training and testing data. The number of epochs is set to 20 and batch\_size is 128.
 
-After the training was finished the model was exported. It then was used in the BE for the categorization of the pages.
+After the training finished the model was exported. It then was used in the BE for the categorization of the pages.
 
 \section{Clustering}\label{ClusteringDevelopment}
 The structure of the pages was to be visualized in the form of a graph. This amount of pages needed to be divided into groups in order to view the structure without the loss of information. For this purpose both LA and LeA were used separately. These algorithms are characterized in sections \ref{louvainAlgorithm} and \ref{leidenAlgorithm} of chapter respectively. 
@@ -95,9 +95,21 @@ The scraped pages of the dark-web were being stored in \textit{ElasticSearch}. W
 \label{technologyOverview}
 The BE was written in Python. As we wanted to follow the REST architecture we decided to make use of the \textit{Django} framework \cite{meetDjango}. Django is responsible for tasks such as running the server or managing web requests. Another advantage of Django is its \textit{Django REST framework} (DRF). DRF offers a convenient way for creating restful endpoints and responses \cite{djangoRest}. Both frameworks are open-source with helpful documentation and community. 
 
-We had to solve performance issues. It took approximately 30 minutes to retrieve and categorize about 220,000 pages from the database and circa xxx seconds to divide such a response into communities. We considered this wait time to be too long. Therefore we decided to cache the data of the first response. For that purpose \textit{Redis} \cite{redis} was used. It is an open-source solution which we used as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages} and \textit{links}, an object serializer was leveraged along with Redis. We decided not to write our own but to utilise the Python \textit{pickle} module\footnote{A module used for converting Python objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of pickle. Pickle also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for Redis to store in an acceptable time. Pickle took xxx seconds to serialize xxx pages. The deserialization of the same number of pages took xxx seconds.
+We had to solve performance issues. It took approximately 30 minutes to retrieve and categorize about 220, 314 pages from the database and circa 13 seconds to divide such a response into communities. We considered this wait time to be too long. Therefore we decided to cache the data of the first response. For that purpose \textit{Redis} \cite{redis} was used. It is an open-source solution which we used as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages} and \textit{links}, an object serializer was leveraged along with Redis. We decided not to write our own but to utilise the Python \textit{pickle} module\footnote{A module used for converting Python objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of pickle. Pickle also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for Redis to store in an acceptable time. Pickle took about 6 seconds to serialize 220, 314 pages. The deserialization of the same number of pages took about 7 seconds. However, the combination of pickle and Redis was not stable enough for the storing of sizable objects. The acquisition of page content was one of the tasks needed of this thesis. As page content was a sizable object we decided to utilize the Python module \textit{shelve} \cite{shelve} (shelve). Shelve manages \textit{shelfs}. A shelf file is a persistent python dictionary. The advantages of using shelve are the possibility of storing large objects and no need for serialization of keys or values. Shelve took approximately 61 seconds to retrieve 220, 314 pages with content. 
 
 \subsection{Implementation} \label{APIImplementation}
+The BE is implemented in project \texttt{Dark-web-categorization-BE}. There are several models situated in the \texttt{models.py} file. They are depicted in figure \ref{BEmodelsDiagram} along with the relationships between them. In the file \texttt{urls.py} routes with corresponding \textit{ViewSets}\footnote{A ViewSet is a class which provides responses for the corresponding endpoints. The request methods \textit{GET} and \textit{POST} are supported.} are registered to the Django \textit{router} \footnote{An object which assigns ViewSets to the corresponding endpoints.}. The file \texttt{apps.py} contains the configuration file for the API. Only the \textit{name} of the API is specified to \textit{api}.
+
+
+
+The file \texttt{repositories.py} holds the methods which handle the fetching from the database. Method \texttt{basic\_search} is used for the filtering of nodes based on page-content or page-ulr. Method \texttt{fetch\_chunk} retrieves portions with pages called \textit{chunks} from the database. In this thesis a chunk contains 500 pages. Each response from the database holds a chunk and a \textit{scroll\_id}. This id is sent in the next request to the database. The enclosed chunk in the next response from Elasticsearch  depends on the scroll\_id. The search context of Elasticsearch is kept open for a minute defined in the \texttt{scroll} attribute. Each request extends this time by 1 minute. Method \texttt{fetch\_all} fetches all pages from the database. In this method \texttt{fetch\_chunk} is called until the response carries no pages. Each chunk is converted to a dictionary of \texttt{Page} objects with the page url as key and the whole page as value. The \texttt{Page} model is depicted in figure \ref{BEmodelsDiagram}. Also, each batch is stored to the disc in a \textit{shelve}. The keys in the shelve are indexes of the batches and the values are the whole batches. After all pages from the database are obtained the content is removed from the pages. Also, invalid links are deleted from the pages. Then the pages are cached in Redis.
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[height=0.9\textheight]{Images/BEmodelsDiagram.png}
+  \caption{A class diagram of the classes used in the BE. The diagram was created leveraging Visual Paradigm \cite{visualParadigm}}
+  \label{BEmodelsDiagram}
+\end{figure} 
+ 
 
 
 \section{Front-end}
@@ -117,33 +129,35 @@ After the application is loaded the UI is composed of a \textit{header} with the
 The \textit{sidebar} contains several \textit{input fields} and \textit{buttons} in a column. At the very top of the \textit{sidebar} a \textit{drop-down button} (DD) is present. 
 
 The DD sets the mode according to which the pages are grouped into communities. There are two modes available, \textit{link-mode} and \textit{category-mode} as can be seen in Figure\ref{modeDropdown}. If \textit{link-mode} is selected, the pages are divided by the LA\ref{louvainAlgorithm} depending on the connections between them only. If \textit{category-mode} is selected, the pages are divided into groups by categories. The pages in the groups are further divided into communities according to links between them, as if in \textit{link-mode}. 
-\begin{figure}[ht!]
-  \centering
-  \includegraphics{Images/mode_dropdown.png}
-  \caption{The DD for the selection of the grouping-mode.}
-  \label{modeDropdown}
-\end{figure} 
+\begin{figure} 
+  \begin{minipage}[t]{0.475\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Images/mode_dropdown.png}
+    \caption{The DD for the selection of the grouping-mode.}
+    \label{modeDropdown}
+  \end{minipage} \hfill
+  \begin{minipage}[t]{0.475\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{Images/filter.png}
+    \caption{The input field with submit button for filtering.}
+    \label{filterNodesElement}
+  \end{minipage}   
+\end{figure}   
 
  An \textit{input field} with a \textit{submit button} was placed underneath the DD for the purpose of filtering nodes according to a search phrase as can be seen in Figure\ref{filterNodesElement}.
-\begin{figure}[ht!]
-  \centering
-  \includegraphics[width=0.9\textwidth]{Images/filter.png}
-  \caption{The input field with submit button for filtering.}
-  \label{filterNodesElement}
-\end{figure}   
 
 The last element shown is an indicator of the current level - how many times the user zoomed into a community. The indicator has a \textit{zoom-out button} placed next to it.
 
-The moment the data is retrieved from the BE the \textit{loader} gets replaced for a graph. The graph-nodes represent either the communities the pages are partitioned into or the pages themselves.  If the graph contains any isolated nodes (isolates) a \textit{mock-community} is displayed containing all isolates. This community cannot be zoomed into. A community node is depicted as a \textit{pie chart}. The individual sectors of the \textit{pie chart} represent the categories of the pages belonging into the community. This is portrayed in Figure\ref{communityNodeRepresentation}. It was difficult to distinct between a small community of only one category and page nodes. A page node is therefore differentiated from a community node by depicting the node as a square shaped symbol. The colour of the square corresponds to the category of the page. An example of a page is illustrated in Figure\ref{pageNodeRepresentation}. It is possible for a level to depict communities and pages at once. The links between the nodes visualize the links between pages or communities. 
+The moment the data are retrieved from the BE the \textit{loader} gets replaced for a graph. The graph-nodes represent either the communities the pages are partitioned into or the pages themselves.  If the graph contains any isolated nodes (isolates) a \textit{mock-community} is displayed containing all isolates. This community cannot be zoomed into. A community node is depicted as a \textit{pie chart}. The individual sectors of the \textit{pie chart} represent the categories of the pages belonging into the community. This is portrayed in Figure\ref{communityNodeRepresentation}. It was difficult to distinct between a small community of only one category and page nodes. A page node is therefore differentiated from a community node by depicting the node as a square shaped symbol. The colour of the square corresponds to the category of the page. An example of a page is illustrated in Figure\ref{pageNodeRepresentation}. It is possible for a level to depict communities and pages at once. The links between the nodes visualize the links between pages or communities. 
 
 \begin{figure} 
-  \begin{minipage}[t]{0.45\textwidth}
+  \begin{minipage}[t]{0.475\textwidth}
     \centering
     \includegraphics[width=0.7\textwidth]{Images/community_node.png}
     \caption{The~representation of a~community node. The~individual sectors of the~pie-chart illustrate the~category-composition in the community.}
     \label{communityNodeRepresentation}
   \end{minipage} \hfill
-  \begin{minipage}[t]{0.45\textwidth}
+  \begin{minipage}[t]{0.475\textwidth}
     \centering
     \includegraphics[width=0.7\textwidth]{Images/page_node.png}
     \caption{The~representation of a~page node. The~colour of the~square symbolizes the~category of the~page.}
@@ -168,13 +182,13 @@ The details of a community consist of grouped information of its members and inc
 Figure\ref{sidebarPageDetails} contains a sidebar view with community details.
 
 \begin{figure}
-  \begin{minipage}[t]{0.45\textwidth}
+  \begin{minipage}[t]{0.475\textwidth}
     \centering
     \includegraphics[width=\textwidth]{Images/community_sidebar.png}
     \caption{The sidebar with details of the selected community.}
    \label{sidebarCommunityDetails}
   \end{minipage} \hfill
-  \begin{minipage}[t]{0.45\textwidth}
+  \begin{minipage}[t]{0.475\textwidth}
     \centering
     \includegraphics[width=\textwidth]{Images/page_sidebar.png}
     \caption{The sidebar with details of the selected page.}
