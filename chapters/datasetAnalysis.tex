@@ -1,5 +1,5 @@
 \label{datasetAnalysis}
-The data set we were working with consisted of pages which had been scraped\footnote{Web scraping is a method leveraged for the collecting of data from web pages with automated software rather than doing so manually. The software used for scraping is AHMIA. AHMIA loads a website, stores the desired data along with links to other pages and then loads those pages.} from the dark web and stored in Elasticsearch (ES) \cite{elasticSearch}. This chapter describes the clear web, deep web, and the dark web, the Elasticsearch database, and the structure of the stored pages.
+The data set we were working with consisted of pages which had been scraped\footnote{Web scraping is a method leveraged for the collecting of data from web pages with automated software rather than doing so manually. The software used for scraping loads a website, stores the desired data along with links to other pages and then loads those pages.} from the dark web utilising Ahmia \cite{ahmia} and stored in Elasticsearch (ES) \cite{elasticSearch} \cite{bcScraping}. This chapter describes the clear web, deep web, and the dark web, Elasticsearch, Ahmia, and the structure of the stored pages.
 
 The Internet comprises networks from all over the world. The networks are connected and together they compose a global network. The Internet can be divided into the clear web, characterized in section~\ref{clearWeb}, and the deep web, introduced in section~\ref{deepWeb} \cite{internetStructure}.
 
@@ -65,6 +65,9 @@ The fields of a page entry are described in the list~\ref{DWDataList}. Each desc
 	\item[url] address of the page. For example \\ \textit{http://wacky2yx73r2bjys.onion/?product=purple-kush-10g}.
 \end{description}
 
+
+\section{Ahmia} \label{ahmia}
+Ahmia is a search engine mainly for domains of the Tor and I2P networks. Ahmia disposes of crawlers. The Ahmia crawlers were leveraged for the scraping of the pages. This is described in the bachelor's thesis by Juraj Noge \cite{bcScraping}. The mentioned thesis was being finished at the same time as this thesis.
 
 \section{Elasticsearch}  \label{Elasticsearch}
 The data collected from the dark web was stored in Elasticsearch. ES is a distributed, open source search engine \cite{elasticSearch} and offers a fast full-text search. Another benefit of ES are documentation and supported tools, such as Logstash \cite{logstash} for processing of data or Kibana \cite{kibana} for the visualization of data. ES can be used as a NoSQL database. Such a database consists of indexes, documents and fields as opposed to tables, rows and columns of SQL databases.  One of the advantages of NoSQL databases is scalability, therefore they are suited for big amounts of data. 
