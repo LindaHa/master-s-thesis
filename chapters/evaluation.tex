@@ -5,7 +5,6 @@
 \section{Clustering results}\label{clusteringEvaluation}
 
 \section{Classification results}\label{classificationEvaluation}
-
 \begin{wraptable}[]{l}{0.6\textwidth}
 \centering
 \scalebox{0.8}{
@@ -91,3 +90,11 @@ The lower and upper sides of a box in the plot represent the first and the third
     \caption{The overall accuracy of the models trained on the dataset samples described in Section \ref{LearningDatasetImplementation}. The data set \textit{Third sample E} stands for the training on the third sample with pretrained embeddings. The individual key values of box plots are detailed in Table \ref{DSsBoxplotValues} }
     \label{DSsBoxplot}
 \end{figure}
+
+\FloatBarrier
+The learning data set used for the model training was the third sample. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
+
+The second classifying tool \cite{classificationProject} we compared our results to accomplished an accuracy of 96.6\%. This tool classified the data into 9 categories. The learing approach chosen was SLr. The learning data set contained 6831 pages. 
+
+Both other projects have achieved a higher accuracy. However, ATOL recognized only 3 divergent categories which may explain the high accuracy. The second project adopted a more sophisticated CNN and model balancing. 
+
