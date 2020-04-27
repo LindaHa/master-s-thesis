@@ -1,8 +1,21 @@
 \label{evaluation}
-
-
-
 \section{Clustering results}\label{clusteringEvaluation}
+We compared the algorithms LeA and LA. Neither algorithm returns disconnected sub-communities. The LeA allowed more zooming. The biggest community which could not be further divided into sub-communities constituted of 40,358 pages. The next biggest community was composed of 432 pages. With the LA implementation the biggest undividable community contained 31,395 pages. The second biggest undividable community was composed of 3,085 pages. It was common for communities with more than 1,800 pages not to be further dividable.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width =\textwidth]{Images/LA.png}
+    \caption{ The output of the LA applied to all scraped pages. The communities in a red circle cannot be zoomed into.}
+    \label{LAFigure}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width =\textwidth]{Images/LeA.png}
+    \caption{ The output of the LA applied to all scraped pages. The communities in a red circle cannot be zoomed into.}
+    \label{LeAFigure}
+\end{figure}
+On the highest level and the first zoom level. The result of LeA is visualized in Figure \ref{LeA}. The result of LA is depicted in Figure \ref{LA}.
+We decided to adopt LeA for the visualization of the pages on the FE. 
 
 \section{Classification results}\label{classificationEvaluation}
 \begin{wraptable}[]{l}{0.6\textwidth}
