@@ -62,7 +62,7 @@ We decided to adopt LeA for the visualization of the pages on the FE.
 \caption{The alias-category lookup for the Figures in Section \ref{classificationEvaluation}.\label{categoryLegend}}
 \end{wraptable}
 
-Four labeled data sets were created as was described in Section \ref{LearningDatasetImplementation}. Ten independent models were trained on each data set. Another ten models were trained with pretrained embeddings on the third samples. The accuracy results of these models are depicted in this section via box plots\footnote{A visual tool for the imaged summarization and comparison of data.} \cite{boxplot}. 
+Four labeled data sets were created as was described in Section \ref{LearningDatasetImplementation}. Ten independent models were trained on each data set. Another ten models were trained with pretrained embeddings on the final samples. The accuracy results of these models are depicted in this section via box plots\footnote{A visual tool for the imaged summarization and comparison of data.} \cite{boxplot}. 
 
 The lower and upper sides of a box in the plot represent the first and the third quartile respectively. The horizontal line inside the box portrays the median. The plus symbol in the box is the mean. The lower and upper whisker ends represent the minimum and maximum values respectively. The name of each box plot corresponds to the utilized training sample data set. Table \ref{categoryLegend} pairs the category shortcuts used in the plots with the actual category names. 
 
@@ -70,7 +70,7 @@ The lower and upper sides of a box in the plot represent the first and the third
     \centering
     \label{CM1Boxplot}
     \includegraphics[width =\textwidth]{Images/CM1Boxplot.png}
-    \caption{The accuracy per category of the models trained on the first sample. The median of several categories of the first samples were below 70\%. The dispersion was often over 50\%. The individual key values of this plot are detailed in Table \ref{CM1BoxplotValues}.}
+    \caption{The accuracy per category of the models trained on the first samples. The median of several categories of the first samples were below 70\%. The dispersion was often over 50\%. The individual key values of this plot are detailed in Table \ref{CM1BoxplotValues}.}
     \label{CM1Boxplot}
 \end{figure}
 
@@ -78,7 +78,7 @@ The lower and upper sides of a box in the plot represent the first and the third
  \begin{figure}[]
     \centering
     \includegraphics[width =\textwidth]{Images/CM2Boxplot.png}
-    \caption{The accuracy per category of the models trained on the second sample. The median of most categories was over 65\%. The dispersion was lowered. The individual key values of this plot are detailed in Table \ref{CM2BoxplotValues}.}
+    \caption{The accuracy per category of the models trained on the enhanced samples. The median of most categories was over 65\%. The dispersion was lowered. The individual key values of this plot are detailed in Table \ref{CM2BoxplotValues}.}
     \label{CM2Boxplot}
 \end{figure}
 
@@ -86,26 +86,26 @@ The lower and upper sides of a box in the plot represent the first and the third
  \begin{minipage}[t]{\textwidth}
     \centering
     \includegraphics[width =\textwidth]{Images/CM3Boxplot.png}
-    \caption{The accuracy per category of the models trained on the third sample. The dispersion was low compared to the results in second samples. The individual key values of this plot are detailed in Table \ref{CM3BoxplotValues}.}
+    \caption{The accuracy per category of the models trained on the final samples. The dispersion was low compared to the results in the enhanced samples. The individual key values of this plot are detailed in Table \ref{CM3BoxplotValues}.}
     \label{CM3Boxplot}
 \end{minipage}
 
  \begin{minipage}[b]{\textwidth}
     \centering
     \includegraphics[width =\textwidth]{Images/CM3EmbeddingsBoxplot.png}
-    \caption{The accuracy per category of the models trained on the third sample with pretrained embeddings. The maximums and the third quartiles were better compared to the third samples without pretrained embeddings. However, the dispersion of the results was comparatively as bad as in the results with the first sample. The individual key values of this plot are detailed in Table \ref{CM3EmbeddingsBoxplotValues}.}
+    \caption{The accuracy per category of the models trained on the final samples with pretrained embeddings. The maximums and the third quartiles were better compared to the final samples without pretrained embeddings. However, the dispersion of the results was comparatively as bad as in the results with the first samples. The individual key values of this plot are detailed in Table \ref{CM3EmbeddingsBoxplotValues}.}
     \label{CM3EmbeddingsBoxplot}
 \end{minipage}
 \end{figure} \hfill
 
  \begin{figure}[t]
     \includegraphics[width =\textwidth]{Images/DSsBoxplot.png}
-    \caption{The overall accuracy of the models trained on the dataset samples described in Section \ref{LearningDatasetImplementation}. The data set \textit{Third sample E} stands for the training on the third sample with pretrained embeddings. The individual key values of box plots are detailed in Table \ref{DSsBoxplotValues} }
+    \caption{The overall accuracy of the models trained on the dataset samples described in Section \ref{LearningDatasetImplementation}. The data set \textit{Final samples E} stands for the training on the final samples with pretrained embeddings. The individual key values of box plots are detailed in Table \ref{DSsBoxplotValues} }
     \label{DSsBoxplot}
 \end{figure}
 
 \FloatBarrier
-The learning data set used for the model training was the third sample. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
+The learning data set used for the model training was the final samples. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
 
 The second classifying tool \cite{classificationProject} we compared our results to accomplished an accuracy of 96.6\%. This tool classified the data into 9 categories. The learing approach chosen was SLr. The learning data set contained 6831 pages. 
 
