@@ -1,3 +1,4 @@
+\iffalse
 \label{developmentIntroduction}
 An application was developed and a CNN was trained in order to fulfill the goals of this thesis. One task of the application was to classify the scraped pages into categories. This was to be done depending on the content of the pages. The application performs the classification via the model created by the CNN. CNNs and ANNs are described in Section \ref{artificialNeuralNetworks}. Another task was to provide a way to observe the structure of the pages, links between them, and their categories. This was achieved by detecting communities of a graph. Communities and how to detect them are described in Chapter \ref{clustering}. One of the partner requirements was for the application to function on a UNIX system. Another requirement was a user friendly UI. Also, the option for retrieval all the available information about the pages was demanded. 
 
@@ -96,18 +97,41 @@ The clustering cycle is repeated on communities until the number of detected com
   \label{clusteringCyclesExample}
 \end{figure} 
 
+
+
+
+
+
+
+
+\fi
 \section{API}\label{APIDevelopment}
 The scraped pages of the dark-web were being stored in \textit{ElasticSearch}. We created a BE in order to perform various operations on the data-set before sending it to the FE. Such operations involve resource intensive processing of large volumes of data, and caching. We decided to initialize a BE utilizing \textit{Python}. The reason behind this decision was the requirement for the application to function on a UNIX system. Other reasons are described in Subsection~\ref{ClassificationTechonologyOverview}. The requirements for the BE was the categorization of the nodes along with their division into groups. The groups were either represented by nodes of the same category or communities. The BE also needed functionality to return details for specific pages or groups if requested.
+
+
 \subsection{Technology overview}
 \label{technologyOverview}
 The BE was written in \textit{Python\textit}. As we wanted to follow the REST architecture we decided to make use of the \textit{Django} framework \cite{meetDjango}. \textit{Django} is responsible for tasks such as running the server or managing web requests. Another advantage of \textit{Django} is its \textit{Django REST framework} (DRF). \textit{DRF} offers a convenient way for creating restful endpoints and responses \cite{djangoRest}. Both frameworks are open-source with helpful documentation and community. 
 
 We had to solve performance issues. It took approximately 30 minutes to retrieve and categorize about 220,314 pages from the database and circa 13 seconds to divide such a response into communities. We considered this wait time to be too long. Therefore we decided to cache the data of the first response. For that purpose \textit{Redis} \cite{redis} was used. It is an open-source solution which we used as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages} and \textit{links}, an object serializer was leveraged along with \textit{Redis}. We decided not to write our own but to utilize the \textit{Python} \textit{pickle} module\footnote{A module used for converting \textit{Python} objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of \textit{pickle}. \textit{Pickle} also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for \textit{Redis} to store in an acceptable time. \textit{Pickle} took about 6 seconds to serialize 220,314 pages. The deserialization of the same number of pages took about 7 seconds. However, the combination of \textit{pickle} and \textit{Redis} was not stable enough for the storing of sizable objects. The acquisition of page content was one of the tasks needed of this thesis. As page content was a sizable object we decided to utilize the \textit{Python} module \textit{shelve} \cite{shelve} (shelve). \textit{Shelve} manages \textit{shelfs}. A \textit{shelf} file is a persistent \textit{Python} dictionary. The advantages of using \textit{shelve} are the possibility of storing large objects and no need for serialization of keys or values. \textit{Shelve} took approximately 61 seconds to retrieve 220,314 pages with content. 
 
+
 \subsection{Implementation} \label{APIImplementation}
 The BE is implemented in the project \texttt{Dark-web-categorization-BE}. The projects was initialized in the \texttt{category} folder. The \texttt{settings.py} and \texttt{wsgi.py} files were included in the \textit{Django} boilerplate. File \texttt{urls.py} contains the endpoints for the whole application. The urls relevant to this thesis are from the \texttt{api} module and imported into this file.
+The \texttt{api} module is situated in the \texttt{api} folder. The implementation relevant for this thesis is situated here. We now detail the most important files. 
+\begin{description}
+    \item [\texttt{urls.py}] contains routes with corresponding \textit{ViewSets}\footnote{A ViewSet is a class which provides responses for the corresponding endpoints. The request methods \textit{GET} and \textit{POST} are supported.} are registered to a \textit{Django} \textit{router}\footnote{An object which assigns ViewSets to the corresponding endpoints.}.
+    \item[{\texttt{apps.py}] contains the boilerplate configuration file for the API.
+    \item[{\texttt{classification}] module contains the categorization functionality.
+        \begin{itemize}            
+            \item[--] \textbf{\texttt{labels.py}} lists the available categories
+            \item[--] \textbf{\texttt{categorizer.py}} contains the class \texttt{Categorizer} use for the categorization in the BE. More details are included in Appendix \ref{dixApClassification}.
+        \end{itemize} 
+    \item[{\texttt{}]
+    \item[{\texttt{}]
+    \item[{\texttt{}]
+\end{description} 
 
-The \texttt{api} module is situated in the \texttt{api} folder. In the file \texttt{urls.py} routes with corresponding \textit{ViewSets}\footnote{A ViewSet is a class which provides responses for the corresponding endpoints. The request methods \textit{GET} and \textit{POST} are supported.} are registered to a \textit{Django} \textit{router}\footnote{An object which assigns ViewSets to the corresponding endpoints.}. The file \texttt{apps.py} contains the boilerplate configuration file for the API. 
 
 The \texttt{classification} folder contains the categorization functionality. The file \texttt{labels.py} lists the available categories. In \texttt{categorizer.py} the class \texttt{Categorizer} is created. The class first loads the tokenizer and the trained model. Then the model is compiled with the same attributes as described in Subsection \ref{ClassificationImplementation}. Both the tokenizer and the model are utilized in the method \texttt{categorize}. This method expects the page content as parameter. It applied the tokenizer to the received content. The output is padded or concatenated to the same length of 1,000 digits. The model predicts the category alias of the modified content. Lastly, the alias is converted to the name of the category.
 
@@ -130,6 +154,10 @@ The file \texttt{repositories.py} holds the methods which handle the fetching fr
  
 
 
+
+
+
+\iffalse
 \section{Front-end}
 For users to be able to see the data acquired from the BE in a reasonable way a FE application was created. The goal of this FE was to visualize the scraped pages in a graph. The pages or communities, and links from the BE were to depict nodes, and links of the graph respectively. The categories of pages or communities needed to be readable from the graph. Additional information about the nodes needed to be displayed or retrieved on demand.
 
@@ -194,7 +222,7 @@ Figure \ref{sidebarPageDetails} contains a sidebar view with page details.
 The details of a community consist of grouped information of its members and include the following:
 \begin {description}
 	\item [Category composition] which is aggregated from the categories of all the pages of the community. Each category is represented by its name and the percentage of its relevance in the community.
-	\item [Page url] addresses (urls) of members belonging into the community. There are up to ten urls visible in the sidebar. All urls are downloadable in a text file. 
+	\item [Page url] addresses (urls) of members belonging into the community. There are up to ten urls visible in the sidebar. All of the urls are downloadable in a text file. 
 	\item[Urls count]represents the number of all the pages belonging into the community. 
 \end{description}
 Figure\ref{sidebarPageDetails} contains a sidebar view with community details.
@@ -258,3 +286,5 @@ The most basic files which only include string constants are situated in the fol
 The dispatching of actions enables the changing of the state via reducers situated in the \texttt{reducers} folders. The state is a single immutabe\footnote{The object cannot be adjusted directly. Instead, a new modified object is returned and the original one stays unmodified.} object and is used in the whole application. A \hypertarget{reducers}{reducer} is a pure function\footnote{The return value of a pure function is only dependent on its input values. A pure function has no side effects.} receiving the current state and the dispatched action as its arguments. It then returns the newly computed state. A reducer builds a new state only if the type of the given action is recognized. If not, the previous state is returned unmodified. The state object received or returned by the reducer does not need to be the entire state (app-state). A reducer may be responsible for just a part of the app-state. However, the root reducer is responsible for the whole app-state.
 
 The folders \texttt{components} contain files with \textit{React} components. They define the skeleton of the UI with the specified behaviour. The folders \texttt{containers} hold files with \textit{React} containers. A container is a file with access to the app-state. It is responsible for passing data to components. 
+
+\fi
