@@ -10,7 +10,7 @@
              % your thesis on only one side of the paper.
     % More options are listed in the class documentation
     % available at <https://www.ctan.org/pkg/fithesis>.
-]{fithesis/fithesis3}
+]{fithesis3}
 \bibliographystyle{plain}
 \usepackage[english]{babel} % By using `czech` or `slovak`
 % instead of `english`, you can typeset the entire thesis
@@ -52,12 +52,14 @@ topic, for his advice and patience.
 \usepackage{listings}
 \usepackage{placeins}
 \usepackage{flafter} 
+\usepackage{float}
 \lstdefinestyle{sharpc}{language=[Sharp]C, basicstyle=\ttfamily\footnotesize, breaklines=true}
 \sidecaptionvpos{figure}{c}
 
 \begin{document}
   \pagestyle{plain}
   
+
   \chapter{Introduction}
   \import{chapters/}{introduction.tex}
   \chapter{Data set analysis}
@@ -66,12 +68,15 @@ topic, for his advice and patience.
   \import{chapters/}{classification.tex}
   \chapter{Clustering}
   \import{chapters/}{clustering.tex}
+
   \chapter{Development}\chaptermark{Development}
   \import{chapters/}{development.tex}  
+
   \chapter{Evaluation}
   \import{chapters/}{evaluation.tex}  
   \chapter{Conclusion}
   \import{chapters/}{conclusion.tex}
-%   \bibliography{bib_file}{}
+   \bibliography{bib_file}{}
   \import{chapters/}{appendix.tex}
+
 \end{document}
