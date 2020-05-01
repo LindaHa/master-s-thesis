@@ -10,7 +10,6 @@ The content of the clear web is indexed by search engines and is publicly access
 The content of the deep web is not indexed by search engines and is not accessible publicly. Emails or medical information are examples of resources in the deep web. A user needs to be authorized to access this data. It is more problematic to measure the size of the deep web because of the fact the content is not indexed. There are not many sources depicting the size of the deep web. In one article from 2012 the size was estimated to be 4,000 to 5,000 times larger than the clear web \cite{deepWebSize}. 
 
 A portion of the deep web is the \textit{dark web}, also called darknet. 
-
 \subsection{Dark web} \label{darkWeb}
 The dark web was designed to provide anonymized services and anonymize user identities. It is therefore also leveraged for activities like accessing or publishing illegal or censored material, e.g. the Bible\footnote{The Bible is restricted in some countries, e.g. North Korea, or Iran \cite{illegalBible}.}, whistle-blower secrets, or child porn. It is also used for trading with illegal goods, such as drugs or guns. Another way to exploit the dark web is to offer or order illegal services, for instance money laundering, hacking or murder \cite{theDarkNet}. The onion router (Tor) or the Invisible Internet Project (I2P) are two of the networks composing the darknet. These networks are described more closely in Subsection \ref{tor} and Subsection \ref{I2P} respectively.
 
@@ -19,21 +18,21 @@ The Tor network \cite{torIntro} is accessible through the Tor browser or Tor pro
 
 We now describe the establishment of an ORing connection. The visualization can be observed in Figure \ref{OREstablishment}. Public-key cryptography is used. The originator, in this case \textit{A}, chooses a list of nodes from which it creates a circuit between itself and the target node \textit{D}. \textit{A} creates a circuit consisting of itself and of nodes \textit{B}, \textit{C} and \textit{D}. \textit{A} creates a fixed-sized cell encrypted in layers using the respective public keys of the nodes in the circuit. The cell contains addresses of the circuit nodes and a different symmetric session key (SSK) for each node. \textit{A} stores the SSKs and sends this cell to \textit{B}. \textit{B} removes the outer layer of the cell using its private key in order to get the address of its successor, in this case \textit{C}, and the SSK assigned to \textit{B}. \textit{B} stores the SSK. \textit{B} cannot remove any additional layer because it lacks the private keys of the successive nodes. \textit{B} sends the cell to \textit{C}. \textit{C} removes another layer, stores the received SSK and, sends the cell to \textit{D}. \textit{D} removes the final layer and stores its SSK. Now \textit{D} is able to communicate with \textit{A} through \textit{B} and \textit{C} using symmetric cryptography. 
 
-The communication in ORing is described in Figure \ref{ORCom}. Node \textit{A} encrypts a message using the symmetric keys of \textit{D}, \textit{C}, and \textit{B} in this order into a fixed-sized cell. It then sends the cell to \textit{B}. \textit{B} removes one layer of the cell, this time using its stored SSK. The message is sent to \textit{C} and \textit{D} in a similar manner. \textit{D} encrypts its response into a fixed-sized cell leveraging its stored SSK. The cell is sent to \textit{C}. \textit{C} encrypts the cell utilizing its SSK. The cell is sent to \textit{B} and \textit{A} in a similar manner. Node \textit{A} decrypts the cell using all three SSKs. 
-
-\begin{figure}
+\begin{figure}[ht!]
   \centering
   \includegraphics[width = \textwidth]{Images/OREstablishment.png}
   \caption{This is how a connection is established in ORing. The individual steps are described in Subsection \ref{tor}.}
   \label{OREstablishment}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \centering
   \includegraphics[width = \textwidth]{Images/ORCom.png}
   \caption{The communication between nodes in ORing is visualized in this image. The individual steps are described in Subsection \ref{tor}.}
   \label{ORCom}
 \end{figure}
+
+The communication in ORing is described in Figure \ref{ORCom}. Node \textit{A} encrypts a message using the symmetric keys of \textit{D}, \textit{C}, and \textit{B} in this order into a fixed-sized cell. It then sends the cell to \textit{B}. \textit{B} removes one layer of the cell, this time using its stored SSK. The message is sent to \textit{C} and \textit{D} in a similar manner. \textit{D} encrypts its response into a fixed-sized cell leveraging its stored SSK. The cell is sent to \textit{C}. \textit{C} encrypts the cell utilizing its SSK. The cell is sent to \textit{B} and \textit{A} in a similar manner. Node \textit{A} decrypts the cell using all three SSKs. 
 
 \subsection{I2P} \label{I2P}
 I2P \cite{i2pIntro} is another network of the dark web which anonymizes its traffic. It is accessible through the I2P browser. In contrast to Tor, communication in I2P is based on \textit{garlic routing} (GRing) \cite{garlicRouting}. GRing is described as an extension of ORing. The established tunnels between two nodes are unidirectional, meaning different tunnels are used for outgoing and incoming messages. Another difference from ORing is the bundling of messages. An individual message is called a \textit{clove}\footnote{Michael Freedman, who defined garlic routing, called cloves \textit{bulbs}.}. Each clove contains its own delivery instructions. These instructions are exposed at the target node. Cloves are bundled into a \text{garlic-message}. The bundling of cloves ensures more secure and efficient communication. 
