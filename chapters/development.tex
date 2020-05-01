@@ -27,7 +27,7 @@ To manipulate the data set efficiently the \textit{pandas} library \cite{pandas}
 The CNN itself was created with the library \textit{Keras} \cite{keras}. \textit{Keras} is a library for the implementation of ML in \textit{Python}. ML is more closely characterized in the Section \ref{machineLearning}. \textit{Keras} supports the tokenization of text and the tools needed to build and train a CNN. The output model of the CNN can be used for the task it was trained for.
 
 \subsection{Learning data set} \label{LearningDatasetImplementation}
-A labeled data set for learning was needed. We therefore built a learning data set composed of a subset of the scraped pages. The pages were retrieved from the database with equivalent fetching functionality as is described in Subsection \ref{APIImplementation}. This functionality is located in the folder \texttt{Helpers}. Only one page with content of each domain from the Tor network was stored. 4,088 pages were obtained this way. These pages were with content exported into a CSV file and labeled manually. 13 categories were identified. We will call this learning data set \textit{first samples} in a later chapter. The problem of this data set was some categories contained less than 100 pages. The training result for those categories were not satisfying. Detailed training results performed on various training data sets are shown in Section \ref{classificationEvaluation}. 
+A labeled data set for learning was needed. We therefore built a learning data set composed of a subset of the scraped pages. The pages were retrieved from the database with equivalent fetching functionality as is described in Subsection \ref{APIImplementation}. This functionality is located in the folder \texttt{helpers}. Only one page with content of each domain from the Tor network was stored. 4,088 pages were obtained this way. These pages were with content exported into a CSV file and labeled manually. 13 categories were identified. We will call this learning data set \textit{first samples} in a later chapter. The problem of this data set was some categories contained less than 100 pages. The training result for those categories were not satisfying. Detailed training results performed on various training data sets are shown in Section \ref{classificationEvaluation}. 
 
 By the merging of categories with less than 100 pages into bigger categories we achieved better training results. One category, \textit{Gambling}, could not be merged with other categories as it was not related enough to any other category. We therefore enhanced Gambling with more pages from the database. This was possible because we found a domain with more than 200 pages with different content all associated to gambling. This data set contained 4.298 pages and 10 categories. We will further call this learning set \textit{enhanced samples}. However, a moral issue related to the naming conventions of the categories arose with this data set. 
 
@@ -40,20 +40,20 @@ The final data set was created by further merging and renaming the categories. 9
 	\item[Illegal services and goods] contained 139 pages. Provided services involved the hiring of hitmen\footnote{A hitman is person hired to kill another person or people.} and fake identity services. Offered goods included drugs and guns.
 	\item[Online Marketplace] contained 143 pages. Content labeled with this category consisted of mentioning products of other categories along with electronics, clothing and accessories. All of these goods were offered at once on one page.
 	\item[Other] contained 806 pages. Pages in this category were not possible to categorize. The content was either not English, too incoherent, short, or vague. 
-	\item[Sexual Content] contained 1196 pages. Content in this category was of a sexual nature including sexual stories and the mentioning of images or videos.
+	\item[Sexual Content] contained 1,196 pages. Content in this category was of a sexual nature including sexual stories and the mentioning of images or videos.
 	\item[Social] contained 136 pages. This content included blogs, chat rooms and information channels. Also censored content was found, such as the Bible or confidential information. Other content found was written works of art and mentions about paintings and music. 
 \end{description}
 
 \subsection{Implementation} \label{ClassificationImplementation}
-The preprocessing of the learning data and the training of the CNN takes place in the file \texttt{KerasModelDataset.ipynb}. 
+The preprocessing of the learning data and the training of the CNN takes place in the file \texttt{keras\_classification\_model.ipynb}. 
 
 The learning data are loaded as a data frame. The data preprocessing is performed on the content of the pages. Non-English rows, also called documents, are removed. This is done by first removing non-numeric and non-alphabetical characters. Then the content is tokenized\footnote{A tool which divides a string into sub-strings.}. In this case the tokens represent words divided by spaces. The tokens are then compared to the English vocabulary of NLTK. According to the percentage of the English words composing the content the document is considered English or non-English. The threshold of English documents is 20\%. This threshold was chosen after discussions with the supervisor. Non-English documents are removed from the data frame.
 
 Next the labels need to be preprocessed. The labels are retrieved from the data frame by removing duplicates from the category column. Then a dictionary\footnote{A python dictionary is a hash table with keys and values.} with the category name as key and the index\footnote{An index in context of this chapter is an integer value corresponding to the position of an entry. It starts from 0.} as value is created. The indexes are used as category aliases. 
 
-Afterwards two empty lists are initialized, \texttt{texts} and \texttt{labels}. For each row of the data frame the content is appended to list \texttt{texts} and the category is converted to the matching alias and appended to the list \texttt{labels}. The text is associated with the analogous label via the indexes in the lists.  This is explained on an example. The row on position $i$ contains content $T_i$ and the corresponding category $C_i$. Content $T_i$ is appended to \texttt{texts} and is on the $i$th position. The alias for category $C_i$ is $C^a_i$. Now $C^a_i$ is appended to \texttt{labels} and is also on the $i$th position.
+Afterwards two empty lists are initialized, \texttt{texts} and \texttt{labels}. For each row of the data frame the content is appended to list \texttt{texts}, the category is converted to the matching alias and appended to the list \texttt{labels}. The text is associated with the analogous label via the indexes in the lists.  This is explained on an example. The row on position $i$ contains content $T_i$ and the corresponding category $C_i$. Content $T_i$ is appended to \texttt{texts} and is on the $i$th position. The alias for category $C_i$ is $C^a_i$. Now $C^a_i$ is appended to \texttt{labels} and is also on the $i$th position.
 
-Next an internal vocabulary is initialized from all words from \texttt{texts}. Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. An example of a portion of such a vocabulary is shown in Appendix \ref{DSvocabulary}. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest is the training data.
+Next an internal vocabulary is initialized from all words from \texttt{texts}. Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. An example of a portion of such a vocabulary is shown in Appendix \ref{DSvocabulary}. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest are the training data.
 
 Each category alias in \texttt{labels} is assigned an index $i$. Each entry of the list is replaced by a one hot vector (OHV)\footnote{A zero vector with one value being 1.} . The value 1 is on the $i$th position of the OHV. The length of the OHV coincides to the number of categories. The list \texttt{labels} becomes a matrix after this modification, meaning a list of vectors.
 
@@ -69,24 +69,29 @@ Afterwards a \textit{Keras} model is fed the CNN structure and compiled. The con
 
 After the training finished the model was exported. It then was used in the (back-end) BE for the categorization of the pages.
 
+
+
+
 \section{Clustering}\label{ClusteringDevelopment}
 The structure of the pages was to be visualized in the form of a graph. The amount of the pages described in Section \ref{dataSet} needed to be divided into groups in order to view the structure without the loss of information. For this purpose both LA and LeA were used separately. These algorithms are characterized in Section \ref{louvainAlgorithm} and Section \ref{leidenAlgorithm} respectively. 
 
 \subsection{Technology overview} \label{ClusteringTechonologyOverview}
 In the beginning we used the library \textit{NetworkX} \cite{networkX} for the graph creation. \textit{NetworkX} is a \textit{Python} library for the managing of complex networks. The advantage of this library is convenient documentation. Also, the graphs of \textit{NetworkX} cover many characteristics such as undirected and directed, or weighted edges. It is possible to filter isolates from the graph.  Another advantage is the availability of standard graph algorithms, including LA. However, the built in LA implementation was too slow for the size of our data set. It didn't succeed to divide about 40,000 pages after 30 minutes. We therefore decided to use a different implementation. The \textit{cylouvain} library \cite{cylouvain} was introduced. 
 
-\textit{Cylouvain} is a faster implementation of LA. The division of 90,275 pages into communities took about 18 seconds. The problem we faced with this implementation was the occasional occurrence of disconnected sub-communities of communities. Our new priority was therefore to adopt an implementation of LeA. The \textit{leidenalg} \cite{leidenalg} library was introduced.
+\textit{Cylouvain} is a faster implementation of LA. The division of 90,275 pages into communities took about 15 seconds. The problem we faced with this implementation was the occasional occurrence of disconnected sub-communities of communities. 
 
-\textit{Leidenalg} is a \textit{C++} implementation of the LeA exposed to \textit{Python}. This implementation takes about 6 seconds to partition the 90,275 pages into communities. Moreover, there are no disconnected sub-communities of communities. \textit{Leidenalg} is built on the \textit{python-igraph} (igraph) library. 
+Our new priority was therefore to adopt an implementation of LeA. The \textit{leidenalg} \cite{leidenalg} library was introduced. \textit{Leidenalg} is a \textit{C++} implementation of the LeA exposed to \textit{Python}. This implementation takes about 6 seconds to partition the 90,275 pages into communities. Moreover, there are no disconnected sub-communities of communities. \textit{Leidenalg} is built on the \textit{python-igraph} (igraph) library. 
 
-\textit{Igraph} is another library for the managing of complex networks. The advantage of this library the availability of the before mentioned implementation of the LeA. Another advantage is \textit{igraph} disposes of an implementation of the LA. This implementation takes about 5 seconds to divide 90,275 pages into communities. Also, no disconnected sub-communities of communities are created. Therefore this implementation was also leveraged.
+\textit{Igraph} is another library for the managing of complex networks. The advantage of this library the availability of the before mentioned implementation of the LeA.
 
 The two utilized implementations are compared in the Section \ref{clusteringEvaluation}.
 
 \subsection{Implementation} \label{ClusteringImplementation}
 The clustering is implemented in the BE application. The application is further described in the next Section \ref{APIDevelopment}. We describe the clustering in this subsection. 
 
-The clustering itself (cluster cycle) is executed in the method \\ \texttt{get\_groups\_without\_links\_and\_isolates} in the \texttt{graph\_helpers.py} file. The entry parameter are either scraped pages or communities. Both will act as nodes. The implementations of the clustering algorithms mentioned in the previous Subsection \ref{ClusteringTechonologyOverview} require the nodes to be in \textit{igraph} format. To build an \textit{igraph} from nodes we first need to convert the nodes into integer aliases. The aliases will constitute the vertices of the graph. The node links also need to be in the form of integer aliases. These link aliases will compose the edges of the graph. Now the graph which was built using the \textit{igraph} library can be filled with the edges and the vertices. Next, isolates are filtered out and deleted from the graph vertices. Afterwards it is decided whether to use the LA or the LeA implementation. The decision is made based on a boolean flag. Both implementations return a partition. This partition is a dictionary with the node aliases as keys and the communities assigned to the nodes as values. At last the aliases in the dictionary are converted back to the original node \textit{ids}\footnote{\textit{Ids} in case of pages are urls. \textit{Ids} in case of communities are specific strings, e.g.~\textit{2.14.0}.}. The method returns the partitioned node ids and the isolates if any were detected. 
+The clustering itself (cluster cycle) is executed in the method \\ \texttt{get\_groups\_without\_links\_and\_isolates} in the \texttt{graph\_helpers.py} file. The entry parameter are either scraped pages or communities. Both will act as nodes. The implementations of the clustering algorithms mentioned in the previous Subsection \ref{ClusteringTechonologyOverview} require the nodes to be in a compatible Graph format. 
+
+First, the pages need to be converted into integer aliases. The aliases will constitute the vertices of the graph. The page links also need to be in the form of integer aliases. These link aliases will compose the edges of the graph. For the graph initialization one of the libraries \textit{igraph} or \textit{NetworkX} is utilized. The decision is made based on a boolean flag whether to use LeA or LA. Now the graph is be filled with the edges and the vertices. Next, isolates are filtered out and deleted from the graph vertices. Afterwards the communities are detected, the result is a partition. This partition is a dictionary with the node aliases as keys and the communities assigned to the nodes as values. At last the aliases in the dictionary are converted back to the original node \textit{ids}\footnote{\textit{Ids} in case of pages are urls. \textit{Ids} in case of communities are specific strings, e.g.~\textit{2.14.0}.}. The method returns the partitioned node ids and the isolates if any were detected. 
 
 The clustering cycle is repeated on communities until the number of detected communities is not greater than the desired maximum number (max count). This is demonstrated in Figure \ref{clusteringCyclesExample}. Another reason to end the repetition is if the number of detected communities cannot be reduced any further. Max count in this thesis is 50.
 \begin{figure}[ht!]
@@ -95,7 +100,6 @@ The clustering cycle is repeated on communities until the number of detected com
   \caption{An example of multiple cluster cycles. Max count is four. The image on the left represents a hypothetical output of the first cluster cycle. It contains 9 squares each of a different colour with undirectional links between them. Each square depicts a community. The number of the communities is bigger than max\_count. Therefore the cluster cycle is repeated with the 9 communities as the nodes to be clustered. The second cluster cycle detects three communities portrayed as rectangles in the right image. This number satisfies the max count condition and the cluster cycle is not repeated.}
   \label{clusteringCyclesExample}
 \end{figure} 
-
 
 
 
@@ -138,7 +142,7 @@ The \texttt{api} module is situated in the \texttt{api} folder. The implementati
 \section{Front-end}
 In order to display the data acquired from the BE in a reasonable way a FE application was created. The goal of the FE was to visualize the scraped pages in a graph. The pages or communities, and links from the BE were to depict nodes, and links of the graph respectively. The categories of pages or communities needed to be readable in the graph. Additional information about the nodes needed to be displayed or retrieved on demand.
 
-\subsection{User interface}
+\subsection{User interface} \label{FEUI}
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{Images/basic_view.png}
@@ -155,7 +159,7 @@ The graph-nodes represent either communities pages are partitioned into, or the 
     \item[Page] nodes are portrayed as square shaped symbols. The colour of the square corresponds to the category of the page.
 \end{description}  
 
-Community-nodes can be double-clicked. After doing so, a new graph is shown. The data of this graph consists of the sub-communities of the clicked community. We call this process \textit{zooming}. In case the parent community contains too many sub-communities, in our case 50, it is displayed as a single community-node. If further zooming is not possible, the user reached the maximum zooming level. Each community may have a different maximum level, depending on the number of its pages and its structure.
+Community-nodes can be double-clicked. After doing so, a new graph is shown. The data of this graph consists of the sub-communities of the clicked community. We call this process \textit{zooming}. If further zooming is not possible, the user reached the maximum zooming level. Each community may have a different maximum level, depending on the number of its pages and its structure. If a community at the maximum level has no siblings it is displayed in one of two ways. The community is decomposed into page-nodes if it contains at most 30 members\footnote{Pages belonging into the community.}. We call these communities decomposable. Otherwise it is portrayed as a community-node.
 
 If the graph contains any isolated nodes (isolates) a mock-community is displayed containing all isolates. This community cannot be zoomed into. 
 
@@ -175,7 +179,6 @@ The details of an individual page are as follows:
 	\item [Url] which also serves as a unique identificator of the page. 
 	\item [Category] of the page. Each page belongs to exactly one category.
 	\item[Linked pages] are url addresses to other pages. There are up to 30 links visible in the sidebar. 
-Figure \ref{sidebarPageDetails} contains a sidebar view with page details.
 \end{description}
 
 The details of a community are visible in Figure \ref{MixedGraphBasic}. They consist of grouped information of its members and include the following:
@@ -218,7 +221,7 @@ The FE project consists of three folders and several configuration files. This s
 \end{description}
 Next we describe folders which represent some part of the \textit{Redux} framework. 
 
-The most basic files which only include string constants are situated in the folders named \texttt{actionTypes}.  These are utilised as action types in actions. An action is a simple objects containing a type and an optional payload. Actions themselves are returned by action creators (AC). 
+The most basic files which only include string constants are situated in the folders named \texttt{actionTypes}.  These are utilised as action types in actions. An action is a simple objects containing a type and an optional payload. Actions themselves are returned by action creators~(AC). 
 
 ACs are functions returning actions and can be found in folders called \texttt{actions}. They can be as simple as those present in the file \texttt{nodesActionCreators.ts}. But they can be more complicated such as the ACs \texttt{fetchNodes.ts} and dispatch multiple simple ACs. The AC \texttt{fetchNodes} is described in more detail in Appendix \ref{dixComplicatedAC}. The purpose of an AC is to be injected into \hyperlink{reducers}{reducers}, i.e. dispatch \texttt{actions} into reducers. 
 
