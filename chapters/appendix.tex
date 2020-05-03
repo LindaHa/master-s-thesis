@@ -257,17 +257,19 @@ Method \texttt{fetch\_chunk} retrieves portions with pages called \textit{chunks
 Method \texttt{fetch\_all} gets all pages from the database. In this method \texttt{fetch\_chunk} is called repeatedly until the response carries no pages. Each chunk is converted to a dictionary of \texttt{Page} objects with the page url as key and the whole page as value. Also, each batch is stored on the disc in a \textit{shelf}. The keys in the \textit{shelf} are indexes of the batches and the values are the whole batches. After all pages from the database are obtained the content is removed from the pages. Also, invalid links are deleted from the pages. Then the pages are cached in \textit{Redis}.
 
 \section{FE}
-\subsection{Detailed file structure}
+\subsection{The remaining FE file structure}
 \begin{description}
     \item[\texttt{node\_modules}] contains imported libraries including \textit{React.js}, \textit{Redux} or \textit{d3}.
     \item[\texttt{public}] encloses a \textit{.ico} file\footnote {A picture with the dimensions 16x16 pixels used by the browser to represent the web page or application. It is usually displayed in the tab in which the application is opened.} and a html file which is the default entry point when the application is started. 
-    \item[\texttt{}]
-    \item[\texttt{}]
-    \item[\texttt{}]
+    \item[\texttt{commont.d.ts}] holds types used heavily across the application, e.g. \textit{Action}. Types in this file are available without importing them to all files in the project.
 \end{description}
-The folder \texttt{node\_modules} contains imported libraries including \textit{React.js}, \textit{Redux} or \textit{d3}. The next folder named \texttt{public} encloses a \textit{.ico} file\footnote {A picture with the dimensions 16x16 pixels used by the browser to represent the web page or application. It is usually displayed in the tab in which the application is opened.} and a html file which is the default entry point when the application is started. The last folder \texttt{src} contains the source code itself. 
 
-As previously mentioned, the FE is written in \textit{TS} which has the advantage of readability and easy navigation. There are, however, also disadvantages. One of them is the need of a \textit{TS} file with the types (typing) for every used library. Typings for popular libraries are often downloadable as modules. If a library has no ready-to-download typings own ones need to be written. In our case the typings for the library \textit{react-d3-graph} were custom made. They can be found in the folder \texttt{@types/react-d3-graph}. The file \texttt{commont.d.ts} holds types used heavily across the application, e.g. \textit{Action}. Types in this file are available without importing them to all files in the project.
+\subsection{State modification structure explained}\label{dixModifyReduxState}
+The most basic files which only include string constants are situated in the folders named \texttt{actionTypes}.  These are utilised as action types in actions. An action is a simple objects containing a type and an optional payload. Actions themselves are returned by action creators~(AC). 
+
+ACs are functions returning actions and can be found in folders called \texttt{actions}. They can be as simple as those present in the file \texttt{nodesActionCreators.ts}. But they can be more complicated such as the ACs \texttt{fetchNodes.ts} and dispatch multiple simple ACs. The AC \texttt{fetchNodes} is described in more detail in Appendix \ref{dixComplicatedAC}. The purpose of an AC is to be injected into \hyperlink{reducers}{reducers}, i.e. dispatch \texttt{actions}. 
+
+The dispatching of actions enables the changing of the state via reducers situated in the \texttt{reducers} folders. The state is a single immutabe\footnote{The object cannot be adjusted directly. Instead, a new modified object is returned and the original one stays unmodified.} object and is used in the whole application. A \hypertarget{reducers}{reducer} is a pure function\footnote{The return value of a pure function is only dependent on its input values. A pure function has no side effects.} receiving the current state and the dispatched action as its arguments. It then returns the newly computed state. A reducer builds a new state only if the type of the given action is recognized. If not, the previous state is returned unmodified. The state object received or returned by the reducer does not need to be the entire state (app-state). A reducer may be responsible for only a part of the app-state. However, the root reducer is responsible for the whole app-state.
 
 \subsection{Detailed fetchNode AC}\label{dixComplicatedAC}
 The AC \texttt{fetchNodes} and the folder it is placed in share the same name. For easier testing purposes the main logic of this AC is put into a function which receives the simple ACs as dependencies. When this AC is called it first dispatches a simple AC to indicate the fetching has begun. After that an identificator (id) is initialized. This id is later used to create an error object in case of failure. Next, the fetching itself begins. The fetching in \texttt{fetchNodes} is realized with the library \textit{isomorphic-fetch}. The fetch function of this library expects the first argument to be the url address of the resource. The second argument is an object describing further details of the request and is optional. Such an object may contain the request method, headers or the payload. If the request does not result in error the response status is checked. After the fetching is complete a success AC with the acquired response is dispatched. If an error is caught during the fetching a failure AC is dispatched. The payload of this AC is an error-object with the id and error message if any.
@@ -275,6 +277,6 @@ The AC \texttt{fetchNodes} and the folder it is placed in share the same name. F
 
 
 
-\chapter{How to train a data set}
-\chapter{How to start the the dark web visualization app}
+\chapter{Train a dataset}
+\chapter{Run the web application}
 \end{appendices}
