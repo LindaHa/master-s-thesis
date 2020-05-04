@@ -53,7 +53,7 @@ Next the labels need to be preprocessed. The labels are retrieved from the data 
 
 Afterwards two empty lists are initialized, \texttt{texts} and \texttt{labels}. For each row of the data frame the content is appended to list \texttt{texts}, the category is converted to the matching alias and appended to the list \texttt{labels}. The text is associated with the analogous label via the indexes in the lists.  This is explained on an example. The row on position $i$ contains content $T_i$ and the corresponding category $C_i$. Content $T_i$ is appended to \texttt{texts} and is on the $i$th position. The alias for category $C_i$ is $C^a_i$. Now $C^a_i$ is appended to \texttt{labels} and is also on the $i$th position.
 
-Next an internal vocabulary is initialized from all words from \texttt{texts}. Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. An example of a portion of such a vocabulary is shown in Appendix \ref{DSvocabulary}. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest are the training data.
+Next an internal vocabulary is initialized from all words from \texttt{texts}. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest are the training data.
 
 Each category alias in \texttt{labels} is assigned an index $i$. Each entry of the list is replaced by a one hot vector (OHV)\footnote{A zero vector with one value being 1.} . The value 1 is on the $i$th position of the OHV. The length of the OHV coincides to the number of categories. The list \texttt{labels} becomes a matrix after this modification, meaning a list of vectors.
 
@@ -164,7 +164,7 @@ The graph-nodes represent either communities pages are partitioned into, or the 
     \item[Page] nodes are portrayed as square shaped symbols. The colour of the square corresponds to the category of the page.
 \end{description}  
 
-Community-nodes can be double-clicked. After doing so, a new graph is shown. The data of this graph consists of the sub-communities of the clicked community. We call this process \textit{zooming}. If further zooming is not possible, the user reached the maximum zooming level. Each community may have a different maximum level, depending on the number of its pages and its structure. If a community at the maximum level has no siblings it is displayed in one of two ways. The community is decomposed into page-nodes if it contains at most 30 members\footnote{Pages belonging into the community.}. We call these communities decomposable. Otherwise it is portrayed as a community-node.
+Community-nodes can be double-clicked. After doing so, a new graph is shown. The data of this graph consists of the sub-communities of the clicked community. We call this process \textit{zooming}. If further zooming is not possible, the user reached the maximum zooming level. Each community may have a different maximum level, depending on the number of its pages and its structure. If a community at the maximum level has no siblings it is displayed in one of two ways. The community is decomposed into page-nodes if it contains at most 30 members\footnote{Community members are pages belonging into the community.}. We call these communities decomposable. Otherwise it is portrayed as a community-node.
 
 If the graph contains any isolated nodes (isolates) a mock-community is displayed containing all isolates. This community cannot be zoomed into. 
 
@@ -215,6 +215,9 @@ an implementation of the library \textit{D3.js} \cite{d3} made more convenient f
 \subsection{Implementation} \label{FEImplementation}
 The FE project consists of three folders and several configuration files. This subsection describes the most important folders in the \texttt{src} folder. 
 \begin{description}
+    \item[\texttt{\_customized\_react-d3-graph}] contains the customized react-d3-graph module \cite{reactD3Graph} written by Daniel Caldas. A portion of the modifications were written by Antonin Klopp-Tosser in an open pull-request \cite{reactD3GraphPR}. 
+
+We enhanced the module so that arrow-heads pointing to custom shaped nodes are visible. This was achieved by determining the direction vector of the link, normalizing it and then multiplying the vector by the shortest distance between the borders of the source and the target node.
     \item[\texttt{models}] contains models and their interfaces. Each file contains one server-model and one client-model. The conversion between these models is conducted in specific helper functions. The advantage of this approach is the independence of client-models from the BE models.
     \item[\texttt{styles}] holds the \textit{Less} classes. The classes are divided into files according on the element they are meant to modify.
     \item[\texttt{utils}] folders enclose helper functions such as converters between server and client models.
