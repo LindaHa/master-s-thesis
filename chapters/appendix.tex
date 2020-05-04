@@ -1,11 +1,102 @@
 \appendixpageoff
 \begin{appendices}
 
+\chapter{Abbreviations}
+\begin{description}
+    \item[]
+    \item[]
+    \item[]
+    \item[]
+\end{description}
+
+\chapter{Data attachment}
+The attachments enclosed in the thesis repository\footnote{https://is.muni.cz/auth/th/noh49/} contains three source codes with and dumps. The files have the following structure.
+\begin{description}
+    \item[\textbf{\texttt{Categorization}}] contains the source code of the sample data set acquisition and the classification of the manually labeled learning set. The labeled learning set is also included.
+    \item [\texttt{Dark-web-categorization-BE}] encompasses the source code of the BE application with the API. The \textit{Redis} and \textit{shelve} dumps are also present.
+    \item [\texttt{Dark-web-categorization}] holds the source code to the FE application. 
+\end{description}
 
 
 
-\chapter{Classification}
-\section{Reults}
+\chapter{Train a classification model}
+In order to to train a classification model, the following prerequisites need to be installed.
+\begin{description}
+    \item[Python 3] \hfill
+    \item[Pip 3] \hfill 
+        \begin{itemize}
+            \item \texttt{apt-get install python3-pip}
+        \end{itemize}
+\end{description}
+We now describe the steps to run the classification process itself.
+\begin{itemize}
+    \item Download the \texttt{Categorization.zip} file and unpack it.
+    \item \texttt{cd Categorization}
+    \item \texttt{pip3 install -r requirements.txt}
+    \item \texttt{jupyter-notebook}
+    \item Open one of the listed url addresses in a browser.
+    \item In the browser, open \texttt{keras\_classification\_model} in the \texttt{training} directory.
+    \item From the header menu select \textit{Cell} > \textit{Run all}
+    \item After the computation is finished the following files are dumped into the \texttt{models} directory.
+        \begin{itemize}
+            \item \texttt{DarkWebCategoryModel.h5}
+            \item \texttt{DarkWebCategoryModel.json}
+            \item \texttt{tokenizer.pickle}
+        \end{itemize}
+The output of the last cell contains the achieved accuracy,  a confusion matrix and the index-category lookup table. The index-category lookup table must also be stored if the newly trained model is to be used.
+\end{itemize}
+
+
+
+\chapter{Run the web application}
+\section{Prerequisites} \label{dixAppPrerequisites}
+In order to run the web application the following prerequisites need to be installed and fulfilled.
+\begin{description}
+    \item[Python 3] \hfill
+    \item[Pip 3] \hfill 
+        \begin{itemize}
+            \item \texttt{apt-get install python3-pip}
+        \end{itemize}
+    \item[Redis] \hfill 
+        \begin{itemize}
+            \item \texttt{sudo apt-get install redis-server}
+            \item (optional) \texttt{sudo systemctl enable redis-server.service } (launches \textit{Redis} on OS launch)
+        \end{itemize}
+    \item[Npm 6.4.1 and Node.js 10.14.1] as we cannot guarantee our application to function correctly with different versions of Npm and Node.js
+        \begin{itemize}
+            \item \texttt{sudo apt install node}
+            \item \texttt{sudo apt install npm 6.4.1}
+            \item \texttt{npm install -g n}
+            \item \texttt{node n 10.14.1}
+        \end{itemize}
+\end{description}
+
+\section{BE}
+We describe how to run the BE application on Ubuntu systems. The prerequisites are listed in Appendix \ref{dixAppPrerequisites}.
+\begin{itemize}
+    \item Download the \texttt{Dark-web-categorization-BE.zip} file and unpack it.
+    \item \texttt{cd Dark-web-categorization-BE}
+    \item \texttt{pip3 install -r requirements.txt}
+    \item \texttt{redis-server} This command needs to be executed from the root directory \texttt{Dark-web-categorization-BE}.
+    \item \texttt{python manage.py runserver 0.0.0.0:8000}
+\end{itemize}
+To use new dumped classification files move them into the \texttt{models} directory located in the \texttt{Dark-web-categorization-BE} root directory. The index-category lookup table needs to replace the table in \texttt{Dark-web-categorization-BE/api/classification.py}.
+
+\section{FE}
+We describe how to run the FE application on Ubuntu systems.
+\begin{itemize}
+    \item Download the \texttt{Dark-web-categorization.zip} file and unpack it.
+    \item \texttt{cd Dark-web-categorization}
+    \item \texttt{npm install --no-optional}
+    \item \texttt{npm run start}
+\end{itemize}
+\end{appendices}
+
+
+
+
+
+\chapter{Classification results}
 We detail the statistical values of the accuracy results of the trained models described in Section \ref{classificationEvaluation}.
 
 \begin{table}[ht!]
@@ -214,6 +305,9 @@ We enclose a portion of an embedding vector for the words \textit{email} copied 
 ], dtype=float32)}
 
 \subsection{Vocabulary initialization}
+We detail the initialization of the internal vocabulary. This step precedes the random division of the learning data into training and testing data described in Subsection \ref{ClassificationImplementation}. 
+
+Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. An example of a portion of such a vocabulary is shown in Appendix \ref{DSvocabulary}. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. 
 \subsection{Data set vocabulary} \label{DSvocabulary}
 We enclose a portion of the vocabulary created from our data set.
 
@@ -274,9 +368,3 @@ The dispatching of actions enables the changing of the state via reducers situat
 \subsection{Detailed fetchNode AC}\label{dixComplicatedAC}
 The AC \texttt{fetchNodes} and the folder it is placed in share the same name. For easier testing purposes the main logic of this AC is put into a function which receives the simple ACs as dependencies. When this AC is called it first dispatches a simple AC to indicate the fetching has begun. After that an identificator (id) is initialized. This id is later used to create an error object in case of failure. Next, the fetching itself begins. The fetching in \texttt{fetchNodes} is realized with the library \textit{isomorphic-fetch}. The fetch function of this library expects the first argument to be the url address of the resource. The second argument is an object describing further details of the request and is optional. Such an object may contain the request method, headers or the payload. If the request does not result in error the response status is checked. After the fetching is complete a success AC with the acquired response is dispatched. If an error is caught during the fetching a failure AC is dispatched. The payload of this AC is an error-object with the id and error message if any.
 
-
-
-
-\chapter{Train a dataset}
-\chapter{Run the web application}
-\end{appendices}
