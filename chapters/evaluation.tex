@@ -4,14 +4,14 @@ We compared the two used algorithms LeA and LA. The results are visualized in Ap
 
 The LA detected 10,072 communities of which 9,915 were decomposable. The decomposable communities contained 33,600 pages in total. The number of disconnected sub-communities was 31. The discovering of all 10,072 communities took 59.7 seconds. The time it took to detect the communities on the highest level was about 14.7 seconds. 
 
-The LeA detected a 7,857 communities of which 7702 were decomposable. A total of 26,372 pages comprised the decomposable communities. No disconnected sub-communities were found. It took the LeA 17 seconds to detect all 7,857 communities. The highest level was partitioned in 5.2 seconds. 
+The LeA detected a 7,857 communities of which 7,702 were decomposable. A total of 26,372 pages comprised the decomposable communities. No disconnected sub-communities were found. It took the LeA 17 seconds to detect all 7,857 communities. The highest level was partitioned in 5.2 seconds. 
 
-We valued the number of decomposable communities detected by the LA. However, the disconnected sub-communities presented a problem in the correctness of the graph structure. Also, the LeA was about three times faster in detecting the communities. The algorithm used for the API responses is therefore the LeA. 
+We valued the number of decomposable communities detected by the LA. However, the disconnected sub-communities presented a problem in the correctness of the graph structure. Also, the LeA was significantly faster in detecting the communities. The algorithm used for the API responses was therefore the LeA. 
 
 We decided to adopt LeA for the visualization of the pages on the FE. 
 
 \section{Classification results}\label{classificationEvaluation}
-Four labeled data sets were created as was described in Section \ref{LearningDatasetImplementation}. Ten independent models were trained on each data set. Another ten models were trained with pretrained embeddings on the final samples. The accuracy results of these models are depicted in this section via box plots\footnote{A visual tool for the imaged summarization and comparison of data.} \cite{boxplot}. 
+Three labeled data sets were created as was described in Section \ref{LearningDatasetImplementation}. Ten independent models were trained on each data set. Another ten models were trained with pretrained embeddings on the final samples. The accuracy results of these models are depicted in this section via box plots\footnote{A visual tool for the imaged summarization and comparison of data.} \cite{boxplot}. 
 
 The lower and upper sides of a box in the plot represent the first and the third quartile respectively. The horizontal line inside the box portrays the median. The plus symbol in the box is the mean. The lower and upper whisker ends represent the minimum and maximum values respectively. The name of each box plot corresponds to the utilized training sample data set. Table \ref{categoryLegend} pairs the category shortcuts used in the plots with the actual category names. 
 
@@ -67,7 +67,7 @@ The lower and upper sides of a box in the plot represent the first and the third
     \centering
     \label{CM1Boxplot}
     \includegraphics[width =\textwidth]{Images/CM1Boxplot.png}
-    \caption{The accuracy per category of the models trained on the first samples. The median of several categories of the first samples were below 70\%. The dispersion was often over 50\%. The individual key values of this plot are detailed in Appendix \ref{CM1BoxplotValues}.}
+    \caption{The accuracy per category of the models trained on the first samples. The median of several categories of the first samples was below 70\%. The dispersion was often over 50\%. The individual key values of this plot are detailed in Appendix \ref{CM1BoxplotValues}.}
     \label{CM1Boxplot}
 \end{figure}
 
