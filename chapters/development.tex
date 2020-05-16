@@ -61,11 +61,11 @@ The preprocessing of the learning data and the training of the CNN takes place i
 
 The learning data are loaded as a data frame. The data preprocessing is performed on the content of the pages. Non-English rows, also called documents, are removed. Documents below a 20\%  threshold of English content are discarded. The threshold was chosen after discussions with the supervisor. The removal of non-English documents is described in detail in Appendix \ref{dixRemoveNonEnglish} 
 
-Next, the labels are to be pre-processed. For that the labels are retrieved from the data frame by removing duplicates from the category column. Then a dictionary\footnote{A python dictionary is a hash table with keys and values.} with the category name as key and the index\footnote{An index in context of this chapter is an integer value corresponding to the position of an entry. It starts from 0.} as value is created. The indexes are used as category aliases. This dictionary functions as a category--index lookup table.
+Next, the labels are to be pre-processed as CNNs require labels to be represented by integers. For that, the labels are retrieved from the data frame by removing duplicates from the category column. Then a dictionary\footnote{A python dictionary is a hash table with keys and values.} with the category name as key and the index\footnote{An index in context of this chapter is an integer value corresponding to the position of an entry. It starts from 0.} as value is created. The indexes are used as category aliases. This dictionary functions as a category--index lookup table.
 
 Afterwards, two empty lists are initialized, \texttt{texts} and \texttt{labels}. For each row of the data frame the content is appended to list \texttt{texts}, the category is converted to the matching alias and appended to the list \texttt{labels}. The text is associated with the analogous label by making use of the indexes in the individual lists lists.  This is explained on an example. The row on position $i$ contains content $T_i$ and the corresponding category $C_i$. Content $T_i$ is appended to \texttt{texts} and is on the $i$th position. The alias for category $C_i$ is $C^a_i$. Now $C^a_i$ is appended to \texttt{labels} and is also on the $i$th position.
 
-Next an internal vocabulary is initialized from all words from \texttt{texts}. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest are the training data. Similarly for 
+Next an internal vocabulary is initialized from all words from \texttt{texts}. The list \texttt{texts} corresponds to a matrix. The matrix is stored in a list of matrices called \texttt{data}. The list \texttt{data} is split into a training and testing set. One fifth of \texttt{data}, meaning 864 entries, is randomly chosen to be the test set. The rest are the training data. 
 
 Each category alias in \texttt{labels} is assigned an index $i$. Each entry of the list is replaced by a one hot vector (OHV)\footnote{A zero vector with one value being 1.} . The value 1 is on the $i$th position of the OHV. The length of the OHV coincides to the number of categories. The list \texttt{labels} becomes a matrix after this modification, meaning a list of vectors. It then is also separated into training and testing data in accordance with the \texttt{data} division.
 
@@ -135,18 +135,19 @@ We had to solve performance issues. It took approximately 30 minutes to retrieve
 
 \textit{Redis} is an open-source solution which we used as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages}, or \textit{links}, an object serializer was leveraged along with \textit{Redis}. We decided not to write our own but to utilize the \textit{Python} \textit{pickle} module\footnote{A module used for converting \textit{Python} objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of \textit{pickle}. \textit{Pickle} also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for \textit{Redis} to store in an acceptable time. 
 
-\textit{Pickle} took about 6 seconds to serialize 220,314 pages. The deserialization of the same number of pages took about 7 seconds. However, the combination of \textit{pickle} and \textit{Redis} was not stable enough for the storing of sizable objects. The acquisition of page content was one of the tasks needed of this thesis. As page content was a sizable object we decided to utilize the \textit{Python} module \textit{shelve} \cite{shelve}. \textit{Shelve} manages \textit{shelfs}. A \textit{shelf} file is a persistent \textit{Python} dictionary. The advantages of using \textit{shelve} are the possibility of storing large objects and no need for serialization of keys or values. \textit{Shelve} took approximately 61 seconds to retrieve 220,314 pages with content. 
+\textit{Pickle} took about 6 seconds to serialize 220,314 pages. The deserialization of the same number of pages took about 7 seconds. However, the combination of \textit{pickle} and \textit{Redis} was not stable enough for the storing of sizable objects. \textit{Redis} and \textit{pickle} were therefore used only for the caching of pages without page content. However, the acquisition of page content was one of the tasks needed of this thesis. As the content was a sizable object we decided to utilize the \textit{Python} module \textit{shelve} \cite{shelve}. \textit{Shelve} manages \textit{shelfs}. A \textit{shelf} file is a persistent \textit{Python} dictionary. The advantages of using \textit{shelve} are the possibility of storing large objects and no need for serialization of keys or values. \textit{Shelve} took approximately 61 seconds to retrieve 220,314 pages with content. 
+
 
 
 \subsection{Implementation} \label{APIImplementation}
 This API handles the following four use-cases. 
 \begin{enumerate}
-    \item The acquisition of all, or specific pages divided into communities depending solely on links between the pages. Or the acquisition of specified pages.
+    \item The acquisition of all, or specific pages divided into communities depending solely on links between the pages. Or the acquisition of a specific page.
     \item  The community detection of all, or specific pages based on categories. This means on the highest level the pages are divided into groups solely by page category. On lower levels the pages are divided into communities depending on the links between the pages.
     \item The obtaining of further details of a specified page.
     \item The retrieval of group details\footnote{Page details of all pages belonging into a specified community.}. 
 \end{enumerate} 
-It is not possible to zoom into communities detected in specified pages.
+It is not possible to obtain sub-communities of communities detected on the specific pages.
 
 The BE is implemented in the project \texttt{Dark-web-categorization-BE}. The project was initialized in the \texttt{category} folder. The \texttt{settings.py} and \texttt{wsgi.py} files were included in the \textit{Django} boilerplate. The file \texttt{urls.py} contains the endpoints for the whole project. The urls relevant to this thesis are from the \texttt{api} module and imported into this file.
 The \texttt{api} module is situated in the \texttt{api} folder. The implementation relevant for this thesis is situated here. We now detail the most important files and modules. 
@@ -186,7 +187,7 @@ The UI is composed of a \textit{header} with the name of the application \textit
 
 The graph-nodes represent either the communities pages are partitioned into, or the pages themselves. Both are exampled in Figure \ref{MixedGraphBasic}. The explanation of the visual differences follows.
 \begin{description}
-    \item[Community]  nodes are depicted as \textit{pie charts}. The individual sectors of the \textit{pie chart} represent the category makeup of the community members\footnote{Pages belonging into the community.}. We call these communities decomposable. Otherwise it is portrayed as a community-node.. 
+    \item[Community]  nodes are depicted as \textit{pie charts}. The individual sectors of the \textit{pie chart} represent the category makeup of the community members\footnote{Pages belonging into the community.}. We call these communities decomposable. Otherwise it is portrayed as a community-node. 
     \item[Page] nodes are portrayed as square shaped symbols. The colour of the square corresponds to the category of the page.
 \end{description}  
 
