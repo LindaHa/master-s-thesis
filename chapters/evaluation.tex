@@ -37,7 +37,7 @@ We decided to adopt LeA for the visualization of the pages on the FE.
 \section{Classification results}\label{classificationEvaluation}
 Three labeled data sets were created as was described in Section \ref{LearningDatasetImplementation}. Ten independent models were trained on each data set. Another ten models were trained with pretrained embeddings on the final samples. The accuracy results of these models are depicted in this section via box plots\footnote{A visual tool for the imaged summarization and comparison of data.} \cite{boxplot}. 
 
-The left and right sides of a box in the plot represent the first and the third quartile respectively. The vertical line inside the box portrays the median. The plus symbol in the box is the mean. The lower and upper (here left and right) whisker ends represent the minimum and maximum values respectively. The name of each box plot corresponds to the utilized training sample data set. Table \ref{categoryLegend} pairs the category shortcuts used in the plots with the actual category names. 
+The left and right sides of a box in the plot represent the first and the third quartiles respectively. The vertical line inside the box portrays the median. The plus symbol in the box is the mean. The lower and upper (here left and right) whisker ends represent the minimum and maximum values respectively. The name of each box plot corresponds to the utilized learning sample data set. Table \ref{categoryLegend} pairs the category shortcuts used in the plots with the actual category names. 
 
 %\begin{wraptable}[]{l}{0.6\textwidth}
 \begin{table}[H]
@@ -103,7 +103,7 @@ The left and right sides of a box in the plot represent the first and the third 
 {\color[HTML]{000000} MC2} & {\color[HTML]{000000} Sexual Content} \\ \bottomrule
 \end{tabular}
 }
-\caption{The initial and the final alias-category lookup for the figures in Section \ref{classificationEvaluation}. Category \textit{MC1} is composed of the categories \textit{C3, C5, C6,} and  \textit{C8}. Category \textit{MC2} was created by merging categories \textit{C2} and \textit{C12}. Categories \textit{C1} and \textit{C4} were grouped together with \textit{C13}.\label{finalCategoryLegend}}
+\caption{The initial and the final alias-category lookup for the figures in Section \ref{classificationEvaluation}. Category \textit{MC1} is composed of the categories \textit{C3, C5, C6,} and  \textit{C8}. Category \textit{MC2} was created by merging categories \textit{C2} and \textit{C12}. Categories \textit{C1} and \textit{C4} were grouped together with \textit{C13}.\label{categoryLegend}}
 \end{table}
 
 
@@ -182,15 +182,17 @@ The left and right sides of a box in the plot represent the first and the third 
 \end{tabular}
 \end{adjustbox}
 }
-\caption{The confusion matrix with the training results of the last model. The very left row depicts the correct categories \textit{y}. The header portrays the predicted categories $\hat{y}$. Let us call a specific correct category $y_i$ and a predicted category $\hat{y}_j$. 
+\caption{The confusion matrix with the training results of the last model. The table is  rotated 90 degrees counter-clockwise. We describe the matrix as if it was not rotated. 
 
-Each cell in the body of the table comprises an integer and a percentage value. The integer represents the number of  $y_i$ pages the model labeled as $\hat{y}_j$. The percentage represents the quantity of ${y_i}$ pages labeled as $\hat{y}_j$ with respect to all ${y_i}$ pages. 
+The very left row depicts the correct categories \textit{y}. The header portrays the predicted categories $\hat{y}$. We call a specific correct category $y_i$ and a specific predicted category $\hat{y}_j$. 
 
-The more pronounced green cells with the bold text hold the correctly predicted values, meaning pages where $y_i$ equals $\hat{y}_j$.}
+Each cell in the body of the table comprises an integer and a percentage value. The integer represents the number of  $y_i$ pages the model labeled as $\hat{y}_j$. The percentage represents the portion of ${y_i}$ pages labeled as $\hat{y}_j$ with respect to all ${y_i}$ pages. 
+
+The more pronounced green cells with the bold text inform about the correctly predicted values, meaning pages where $y_i$ equals $\hat{y}_j$.}
 \label{finalConfusionMatrix}
 \end{SCtable}
 
-The learning data set used for the model training was the final samples. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
+The learning data set used for the model training was the final samples. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. The confusion matrix is shown in Table \ref{finalConfusionMatrix}. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
 
 The second classifying tool \cite{classificationProject} we compared our results to accomplished an accuracy of 96.6\%. This tool classified the data into 9 categories. The learning approach chosen was SLr. The learning data set contained 6831 pages. 
 
