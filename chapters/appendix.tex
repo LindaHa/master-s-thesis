@@ -63,9 +63,9 @@ We enclose a list of abbreviations with the meaning they represent.
 \end{description}
 
 \chapter{Data attachment}
-The attachments enclosed in the thesis repository\footnote{https://is.muni.cz/auth/th/noh49/} contain three source codes with dumps. The files have the following structure.
+The attachments enclosed in the thesis repository\footnote{https://is.muni.cz/auth/th/noh49/} contain three projects with dumps. The files have the following structure.
 \begin{description}
-    \item[\textbf{\texttt{Categorization}}] contains the source code for the sample data set acquisition and the classification of the manually labeled learning set. The labeled learning set is also included.
+    \item[\textbf{\texttt{Categorization}}] contains the source code for the sample data set acquisition and the classification of the manually labeled learning set. The labeled learning set without pages labeled as \textit{Sexual content} is also included. The pages of \textit{Sexual content} were removed because of moral and legal issues. In case of interest contact RNDr. Martin Stehlík, Ph.D. 
     \item [\texttt{Dark-web-categorization-BE}] encompasses the source code of the BE application with the API. The \textit{Redis} and \textit{shelve} dumps are also present.
     \item [\texttt{Dark-web-categorization}] holds the source code to the FE application. 
 \end{description}
@@ -123,7 +123,7 @@ In order to run the web application the following prerequisites need to be insta
         \end{itemize}
 \end{description}
 
-\section{BE}
+\section{Back-end}
 We describe how to run the BE on a Ubuntu system.
 \begin{itemize}
     \item Download the \texttt{Dark-web-categorization-BE.zip} file and unpack it.
@@ -134,7 +134,7 @@ We describe how to run the BE on a Ubuntu system.
 \end{itemize}
 To use new dumped classification files move them into the \texttt{models} directory located in the \texttt{Dark-web-categorization-BE} root directory. The index-category lookup table needs to replace the table in \texttt{Dark-web-categorization-BE/api/classification.py}.
 
-\section{FE}
+\section{Front-end}
 We describe how to run the FE on Ubuntu systems.
 \begin{itemize}
     \item Download the \texttt{Dark-web-categorization.zip} file and unpack it.
@@ -332,7 +332,7 @@ We enclose a portion of an embedding vector for the words \textit{email} copied 
 \subsection{Vocabulary initialization}
 We detail the initialization of the internal vocabulary. This step precedes the random division of the learning data into training and testing data described in Subsection \ref{ClassificationImplementation}. 
 
-Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. An example of a portion of such a vocabulary is shown in Appendix \ref{DSvocabulary}. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. 
+Each word $w$ of each entry in \texttt{texts} is represented by an integer $n_w$. An example of a portion of such a vocabulary is shown in Subsection \ref{DSvocabulary}. Each entry of \texttt{texts} therefore corresponds to a vector of integers. All vectors are trimmed or padded to the same length of 1,000 integers. 
 \subsection{Data set vocabulary} \label{DSvocabulary}
 We enclose a portion of the vocabulary created from our data set.
 
@@ -388,7 +388,7 @@ Method \texttt{fetch\_all} gets all pages from the database. Here the method \te
 \subsection{State modification structure explained}\label{dixModifyReduxState}
 The most basic files which only include string constants are situated in the directories named \texttt{actionTypes}.  These are utilised as action types in actions. An action is a simple object containing a string type and an optional payload. Actions themselves are returned by action creators~(AC). 
 
-ACs are functions returning actions and can be found in directories called \texttt{actions}. They can be as simple as those present in the file \texttt{nodesActionCreators.ts}. But they can be more complicated such as the ACs \texttt{fetchNodes.ts} and dispatch multiple simple ACs. The AC \texttt{fetchNodes} is described in more detail in Appendix \ref{dixComplicatedAC}. The purpose of an AC is to be injected into \hyperlink{reducers}{reducers}, i.e. dispatch \texttt{actions}. 
+ACs are functions returning actions and can be found in directories called \texttt{actions}. They can be as simple as those present in the file \texttt{nodesActionCreators.ts}. But they can be more complicated such as the ACs \texttt{fetchNodes.ts} and dispatch multiple simple ACs. The AC \texttt{fetchNodes} is described in more detail in Subsection \ref{dixComplicatedAC}. The purpose of an AC is to be injected into \hyperlink{reducers}{reducers}, i.e. dispatch \texttt{actions}. 
 
 The dispatching of actions enables the changing of the state via reducers situated in the \texttt{reducers} directories. The state is a single immutabe\footnote{The object cannot be adjusted directly. Instead, a new modified object is returned and the original one stays unmodified.} object and is used in the entire application. A \hypertarget{reducers}{reducer} is a pure function\footnote{The return value of a pure function is only dependent on its input values. A pure function has no side effects.} receiving the current state and the dispatched action as its arguments. It then returns the newly computed state. A reducer builds a new state only if the type of the given action is recognized. If not, the previous state is returned unmodified. 
 
@@ -402,6 +402,5 @@ When this AC is called it first dispatches a simple AC to indicate the fetching 
  Next, the fetching itself begins. The fetching in \texttt{fetchNodes} is realized with the library \textit{isomorphic-fetch}. The fetch function of this library expects the first argument to be the url address of the resource. The second argument is an object describing further details of the request and is optional. Such an object may contain the request method, headers or the payload. If the request does not result in error the response status is checked. 
 
 After the fetching is complete a success AC with the acquired response is dispatched. If an error is caught during the fetching a failure AC is dispatched. The payload of this AC is an error-object with the id and error message if any.
-
 
 \end{appendices}

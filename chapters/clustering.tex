@@ -71,7 +71,7 @@ The LA was compared to other algorithms for community detection \cite{louvainAlg
 \section{Leiden algorithm} \label{leidenAlgorithm}
 The LeA is another algorithm for community detection on large graphs. The authors of the LeA claim the LA to have a major flaw \cite{leidenAlgorithm}. The LA may detect badly connected, or internally disconnected communities\footnote{It is not possible to form a connected component from nodes of an internally disconnected community.}. The latter phenomenon occurs when a bridge-node\footnote{A node connecting two or more connected components otherwise not connected between each other.} of one community is assigned to another community and the remaining nodes are not. The LeA is based on the LA and eliminates the before mentioned problems. 
 
-Next we outline the principle of the LeA. The detailed steps are portrayed in Figure \ref{leidenVisualization} \cite{leidenVisualization}. The steps are compared to the steps depicted in the characterization of the LA in Section \ref{louvainAlgorithm} and described using the visualization.
+Next we outline the principle of the LeA. The detailed steps are portrayed in Figure \ref{leidenVisualization} \cite{leidenVisualization}. The steps are compared to the steps discussed in the characterization of the LA in Section \ref{louvainAlgorithm} and described using the visualization.
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{Images/leidenVisualization.png}
@@ -103,7 +103,7 @@ Next we outline the principle of the LeA. The detailed steps are portrayed in Fi
 \end{enumerate}
 These steps are repeated until no further improvement in modularity can be achieved. 
 
-Step \ref{LeAd} is in further iterations significant.  It is impossible to re-assign a bridge-node to a different community with the LeA. But this may happen using the LA. Now we demonstrate why on Figure~\ref{leidenVisualization}~\textit{f)}. 
+Step \ref{LeAd} is in further iterations significant. It is impossible to re-assign a bridge-node to a different community with the LeA. But this may happen using the LA. Now we demonstrate why on Figure~\ref{leidenVisualization}~\textit{f)}. 
 
 A bridge node in the blue community connecting the two smaller nodes is depicted. Let us call this bridge-node \textit{B}. With the LeA, all blue nodes are still considered to be of the same community. Therefore they cannot be shifted into any neighbouring communities. 
 
