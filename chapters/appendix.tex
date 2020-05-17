@@ -18,6 +18,7 @@ We enclose a list of abbreviations with the meaning they represent.
 \item[ConvO] convolution operation
 \item[DD] drop-down button
 \item[DnsL] dense layer
+\item[DRF] Django REST framework
 \item[ES] Elasticsearch
 \item[EmbL] embedding layer
 \item[FE] front-end application
@@ -50,12 +51,12 @@ We enclose a list of abbreviations with the meaning they represent.
 \item[batch cycle] is a typical learning cycle over a mini-batch  in a ANN using SLr
 \item[cluster cycle] is one iteration of community detection
 \item[community-node] is a community considered a node in the detection of communities in the LA or the LeA
-\item[decomposable community] is a community with no more than 30 pages. It can be decomposed to that the members are displayed.
+\item[decomposable community] is a community with no more than 30 members. It can be decomposed so that the members are displayed. Communities where zooming is possible are also called decomposable.
 \item[enhanced samples] are the second learning data set based on first samples with enhanced \textit{Gambling} and 10 categories
-\item[final samples] are the third and final learning data set base on enhanced samples with 9 categories
-\item[first samples] are the learning first data set containing 13 categories
+\item[final samples] are the third and final learning data set based on enhanced samples with 9 categories
+\item[first samples] are the learning first data set containing 14 categories
 \item[igraph] the python-igraph library
-\item[mac count] it the maximum desire number of communities to be returned by the API
+\item[max count] it the maximum desired number of communities to be returned by the API
 \item[naive approach] is a simple classification system with a list of words assigned to each category introduced in Subsection~\ref{naiveApproach}
 \item[old-link] are links of nodes belonging to the same community-node in the detection of communities in the LA or the LeA
 \item[pickle] Python pickle module
@@ -76,8 +77,9 @@ The attachments enclosed in the thesis repository\footnote{https://is.muni.cz/au
 In order to to train a classification model, the following prerequisites need to be installed.
 \begin{description}
     \item[Python 3] \hfill
-    \item[Pip 3] 
+    \item[Pip 3] \hfill
         \begin{itemize}
+	 \item \texttt{sudo apt update}
             \item \texttt{apt-get install python3-pip}
         \end{itemize}
 \end{description}
@@ -108,6 +110,7 @@ In order to run the web application the following prerequisites need to be insta
     \item[Python 3] \hfill
     \item[Pip 3] \hfill 
         \begin{itemize}
+	 \item \texttt{sudo apt update}
             \item \texttt{apt-get install python3-pip}
         \end{itemize}
     \item[Redis] \hfill 

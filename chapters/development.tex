@@ -10,14 +10,14 @@ A web application was developed and a CNN was trained in order to fulfill the go
 
 One task of the application was to classify the scraped pages into categories. This was to be done depending on the content of the pages. The application performs the classification via the model created by the CNN. CNNs and ANNs are described in Section \ref{artificialNeuralNetworks}. 
 
-Another task was to provide a way to observe the structure of the pages, links between them, and their categories. This was achieved by detecting communities of a graph. Communities and how to detect them are described in Chapter \ref{clustering}. 
+Another task was to provide a way to observe the structure of the pages, links between them, and their categories. This was achieved by detecting communities of a graph. Communities and how to detect them were described in Chapter \ref{clustering}. 
 
 One of the partner requirements was for the application to function on a UNIX system. Another requirement was a user friendly user interface (UI). Also, the option for the retrieval of all the available information about the pages was expected. 
 
 This chapter first describes the implementation of the model for the classification of the pages. Afterwards the implementation of the clustering is introduced. Then the design and implementation of the application which is composed of a back-end application (BE) with a representational state transfer (REST) application program interface (API) and a front-end (FE) web application is detailed. 
 
 \section{Classification} \label{ClassificationDevelopment}
-To categorize the pages depending on their content a CNN needed to be created. The number and the structure of the available data are detailed in Section \ref{dataSet}. A project called \texttt{Categorization} was built. For the training of a CNN a suitable training and testing data set needed to be prepared. The desired output of the CNN was a model able to categorize the pages with a reasonable accuracy. 
+To categorize the pages depending on their content a CNN needed to be created. The number and the structure of the available data were detailed in Section \ref{dataSet}. A project called \texttt{Categorization} was built. For the training of a CNN a suitable training and test data set needed to be prepared. The desired output of the CNN was a model able to categorize the pages with a reasonable accuracy. 
 
 This chapter describes the steps taken in order to achieve the listed goals along with the technologies used.
 
@@ -32,16 +32,16 @@ For the modification of the content of the pages we utilized the library \textit
 
 For the management of large matrices and vectors we used the library \textit{NumPy} \cite{numpy}. \textit{NumPy} is a \textit{Python} library used for scientific computing. The functionality includes for example the formation of n-dimensional array objects, the random shuffling of rows of such an object, and random number capabilities. 
 
-To manipulate the data set efficiently the \textit{pandas} library \cite{pandas} was adopted. \textit{Pandas} is an open-source library used for the manipulation of data frame\footnote{A data frame is a two-dimensional structure resembling a common table. Data stored in columns contains values designated to the same purpose. } objects. It is possible to slice through, add data to, or remove data from data frames. Also, data frames may be merged or reshaped. Supported file formats include CSV and excel spreadsheet (XLS) files.
+To manipulate the data set efficiently the \textit{pandas} library \cite{pandas} was adopted. \textit{Pandas} is an open-source library used for the manipulation of data frame\footnote{A data frame is a two-dimensional structure resembling a common table. Data stored in columns contain values designated to the same purpose. } objects. It is possible to slice through, add data to, or remove data from data frames. Also, data frames may be merged or reshaped. Supported file formats include CSV and excel spreadsheet (XLS) files.
 
-The CNN itself was created with the library \textit{Keras} \cite{keras}. \textit{Keras} is a library for the implementation of ML in \textit{Python}. ML is discussed in Section \ref{machineLearning}. \textit{Keras} supports the tokenization of text and the tools needed to build and train a CNN. The output model of the CNN can be used for the task it was trained for.
+The CNN itself was created with the library \textit{Keras} \cite{keras}. \textit{Keras} is a library for the implementation of ML in \textit{Python}. ML was discussed in Section \ref{machineLearning}. \textit{Keras} supports the tokenization of text and the tools needed to build and train a CNN. The output model of the CNN can be used for the task it was trained for.
 
 \subsection{Learning data set} \label{LearningDatasetImplementation}
 A labeled data set for learning was necessary. We therefore built a learning data set composed of a subset of the scraped pages. The pages were retrieved from the database with equivalent fetching functionality as is described in Subsection \ref{APIImplementation}. This functionality is located in the folder \texttt{helpers}. Only one page with content of each domain from the Tor network was stored. 4,088 pages were obtained this way. These pages were with content exported into a CSV file and labeled manually. 
 
-13 categories were identified. We will call this learning data set \textit{first samples} in a later chapter. The problem of this data set was some categories contained less than 100 pages. The training result for those categories were not satisfying. Detailed training results performed on various training data sets are shown in Section \ref{classificationEvaluation}. 
+14 categories were identified. We will call this learning data set \textit{first samples} in a later chapter. The problem of this data set was some categories contained less than 100 pages. The training result for those categories were not satisfying. Detailed training results performed on various training data sets are shown in Section \ref{classificationEvaluation}. 
 
-By the merging of categories with less than 100 pages into bigger categories we achieved better training results. One category, \textit{Gambling}, could not be merged with other categories as it was not related enough to any other category. We therefore enhanced \textit{Gambling} with more pages from the database. This was possible because we found a domain with more than 200 pages with different content all associated to gambling. This data set contained 4.298 pages and 10 categories. We will further call this learning set \textit{enhanced samples}. However, a moral issue related to the naming conventions of the categories arose with this data set. 
+By the merging of categories with less than 100 pages into bigger categories we achieved better training results. One category, \textit{Gambling}, could not be merged with other categories as it was not related enough to any other category. We therefore enhanced \textit{Gambling} with more pages from the database. This was possible because we found a domain with more than 200 pages with different content all associated to gambling. This data set contained 4,298 pages and 10 categories. We will further call this learning set \textit{enhanced samples}. However, a moral issue related to the naming conventions of the categories arose with this data set. 
 
 The final data set was created by further merging and renaming the categories. 9 categories were identified. We will call this data set \textit{final samples}. The 9 categories detected are detailed as follows:
  \label{classificationCategories}
@@ -85,7 +85,7 @@ After the training finished the model was exported. It then was used in the BE f
 
 
 \section{Clustering}\label{ClusteringDevelopment}
-The structure of the pages was to be visualized in the form of a web graph. The amount of the pages described in Section \ref{dataSet} needed to be divided into communities in order to view the structure without the loss of information. For this purpose both the LA and the LeA were used, separately. These algorithms are characterized in Section \ref{louvainAlgorithm} and Section \ref{leidenAlgorithm} respectively. 
+The structure of the pages was to be visualized in the form of a web graph. The amount of the pages described in Section \ref{dataSet} needed to be divided into communities in order to view the structure without the loss of information. For this purpose both the LA and the LeA were used, separately. These algorithms were characterized in Section \ref{louvainAlgorithm} and Section \ref{leidenAlgorithm} respectively. 
 
 \subsection{Technology overview} \label{ClusteringTechonologyOverview}
 In the beginning we used the library \textit{NetworkX} \cite{networkX} for the graph creation. \textit{NetworkX} is a \textit{Python} library for the managing of complex networks. The advantage of this library is convenient documentation. Also, the graphs of \textit{NetworkX} cover many characteristics such as undirected and directed, or weighted edges. It is possible to filter isolates from the graph. Another advantage is the availability of standard graph algorithms, including the LA. However, the built in LA implementation was too slow for the size of our data set. It didn't succeed to divide about 40,000 pages within 30 minutes. We therefore decided to use a different implementation. The \textit{cylouvain} library \cite{cylouvain} was introduced. 
@@ -94,25 +94,25 @@ In the beginning we used the library \textit{NetworkX} \cite{networkX} for the g
 
 Our new priority was therefore to adopt an implementation of the LeA. The \textit{leidenalg} \cite{leidenalg} library was introduced. \textit{Leidenalg} is a \textit{C++} implementation of the LeA exposed to \textit{Python}. This implementation takes about 6 seconds to partition the 90,275 pages into communities. Moreover, there are no disconnected sub-communities of communities. \textit{Leidenalg} is built on the \textit{python-igraph} (igraph) library. 
 
-\textit{Igraph} is another library for the managing of complex networks. The advantage of this library the availability of the before mentioned implementation of the LeA.
+\textit{Igraph} is another library for the managing of complex networks. The advantage of this library is the availability of the before mentioned implementation of the LeA.
 
 We decided to keep the LA implementation despite the drawbacks for comparison purposes. The two utilized implementations are compared in Section \ref{clusteringEvaluation}.
 
 \subsection{Implementation} \label{ClusteringImplementation}
 The clustering is implemented in the BE. The BE is further described in the next Section \ref{APIDevelopment}. We describe the clustering in this subsection. 
 
-The clustering itself (cluster cycle) is executed in the method \\ \texttt{get\_groups\_without\_links\_and\_isolates} in the \texttt{graph\_helpers.py} file. The entry parameter are either scraped pages or communities. Both will act as nodes. The implementations of the clustering algorithms mentioned in the previous Subsection \ref{ClusteringTechonologyOverview} require the nodes to be in a compatible Graph format. 
+The clustering itself (cluster cycle) is executed in the method \\ \texttt{get\_groups\_without\_links\_and\_isolates} in the \texttt{graph\_helpers.py} file. The entry parameters are either scraped pages or communities. Both will act as nodes. The implementations of the clustering algorithms mentioned in the previous Subsection \ref{ClusteringTechonologyOverview} require the nodes to be in a compatible Graph format. 
 
 First, the pages need to be converted into integer aliases. The aliases will constitute the vertices of the graph. The page links also need to be in the form of integer aliases. These link aliases will compose the edges of the graph.
 
- For the graph initialization one of the libraries \textit{igraph} or \textit{NetworkX} is utilized. The decision is made based on a boolean flag whether to use the LA. The graph is now filled with the edges and the vertices. Next, isolates are filtered out and deleted from the graph vertices. 
+ For the graph initialization one of the libraries, \textit{igraph} or \textit{NetworkX}, is utilized. The decision is made based on a boolean flag whether to use the LA. The graph is now filled with the edges and the vertices. Next, isolates are filtered out and deleted from the graph vertices. 
 
 Afterwards the communities are detected, the result is a partition. The partition is a dictionary with the node aliases as keys and the communities assigned to the nodes as values. Lastly the aliases in the dictionary are converted back to the original node \textit{ids}\footnote{\textit{Ids} in case of pages are urls. \textit{Ids} in case of communities are specific strings, e.g.~\textit{2.14.0}.}. The method returns the partitioned node ids, and the isolates if any were present. 
 
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{Images/clusteringCyclesExample.png}
-  \caption{An example of multiple cluster cycles. Max count is four. The image on the left represents a hypothetical output of the first cluster cycle. It contains 9 squares each of a different colour with undirectional links between them. Each square depicts a community. The number of the communities is bigger than max\_count. Therefore the cluster cycle is repeated with the 9 communities as the nodes to be clustered. The second cluster cycle detects three communities portrayed as rectangles in the right image. This number satisfies the max count condition and the cluster cycle is not repeated.}
+  \caption{An example of multiple cluster cycles. Max count is four. The image on the left represents a hypothetical output of the first cluster cycle. It contains nine squares each of a different colour with undirectional links between them. Each square depicts a community. The number of the communities is bigger than max\_count. Therefore the cluster cycle is repeated with the nine communities as the nodes to be clustered. The second cluster cycle detects three communities portrayed as rectangles in the right image. This number satisfies the max count condition and the cluster cycle is not repeated.}
   \label{clusteringCyclesExample}
 \end{figure} 
 
@@ -124,7 +124,7 @@ The clustering cycle is repeated on communities until the number of the detected
 \section{API}\label{APIDevelopment}
 The scraped pages of the dark-web were being stored in \textit{ElasticSearch}. We created a BE in order to perform various operations on the data-set before sending it to the FE. Such operations involve resource intensive processing of large volumes of data, and caching. We decided to initialize the BE utilizing \textit{Python}. The reason behind this decision was the requirement for the application to function on a UNIX system. Other reasons are described in Subsection~\ref{ClassificationTechonologyOverview}. 
 
-The required API tasks were the categorization of the nodes along with their division into communities. Communities were represented by either nodes of the same category or by communities. The BE was also demanded to return details for specific pages or groups if requested.
+The required API tasks were the categorization of the nodes along with their division into groups. The groups were represented by either nodes of the same category or by communities. The BE was also demanded to return details for specific pages or groups if requested.
 
 
 \subsection{Technology overview}
@@ -133,9 +133,9 @@ The BE was written in \textit{Python\textit} and contained the API. As we wanted
 
 We had to solve performance issues. It took approximately 30 minutes to retrieve and categorize about 220,314 pages from the database and circa 6 seconds to divide such a response into communities. We considered this wait time to be too long. We therefore decided to cache the data of the first response. For that purpose \textit{Redis} \cite{redis} was used. 
 
-\textit{Redis} is an open-source solution which we used as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages}, or \textit{links}, an object serializer was leveraged along with \textit{Redis}. We decided not to write our own but to utilize the \textit{Python} \textit{pickle} module\footnote{A module used for converting \textit{Python} objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of \textit{pickle}. \textit{Pickle} also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for \textit{Redis} to store in an acceptable time. 
+\textit{Redis} is an open-source solution which we utilized as a key-value store. It supports basic data structures\footnote{Simple structures, e.g. strings, numbers or sets.} as values, but not custom objects. Since the API uses custom objects for \textit{communities}, \textit{pages}, or \textit{links}, an object serializer was leveraged along with \textit{Redis}. We decided not to write our own but to utilize the \textit{Python} \textit{pickle} module\footnote{A module used for converting \textit{Python} objects to streams of bytes and vice versa.} \cite{pickle} (pickle). The reason behind this decision was the simplicity of \textit{pickle}. \textit{Pickle} also fulfilled all our needs for serializing. Specifically the serialization or deserialization of data in the form of the previously mentioned models for \textit{Redis} to store in an acceptable time. 
 
-\textit{Pickle} took about 6 seconds to serialize 220,314 pages. The deserialization of the same number of pages took about 7 seconds. However, the combination of \textit{pickle} and \textit{Redis} was not stable enough for the storing of sizable objects. \textit{Redis} and \textit{pickle} were therefore used only for the caching of pages without page content. However, the acquisition of page content was one of the tasks needed of this thesis. As the content was a sizable object we decided to utilize the \textit{Python} module \textit{shelve} \cite{shelve}. \textit{Shelve} manages \textit{shelfs}. A \textit{shelf} file is a persistent \textit{Python} dictionary. The advantages of using \textit{shelve} are the possibility of storing large objects and no need for serialization of keys or values. \textit{Shelve} took approximately 61 seconds to retrieve 220,314 pages with content. 
+\textit{Pickle} took about 6 seconds to serialize 220,314 pages. The deserialization of the same number of pages took about 7 seconds. However, the combination of \textit{pickle} and \textit{Redis} was not stable enough for the storing of sizable objects. \textit{Redis} and \textit{pickle} were therefore used only for the caching of pages without page content. However, the acquisition of page content was one of the tasks needed of this thesis. As the content was a sizable object we decided to utilize the \textit{Python} module \textit{shelve} \cite{shelve}. \textit{Shelve} manages \textit{shelfs}. A \textit{shelf} file is a persistent \textit{Python} dictionary. The advantages of using \textit{shelve} are the possibility of storing large objects and no need for serialization of keys nor values. \textit{Shelve} took approximately 61 seconds to retrieve 220,314 pages with content. 
 
 
 
@@ -187,11 +187,11 @@ The UI is composed of a \textit{header} with the name of the application \textit
 
 The graph-nodes represent either the communities pages are partitioned into, or the pages themselves. Both are exampled in Figure \ref{MixedGraphBasic}. The explanation of the visual differences follows.
 \begin{description}
-    \item[Community]  nodes are depicted as \textit{pie charts}. The individual sectors of the \textit{pie chart} represent the category makeup of the community members\footnote{Pages belonging into the community.}. We call these communities decomposable. Otherwise it is portrayed as a community-node. 
-    \item[Page] nodes are portrayed as square shaped symbols. The colour of the square corresponds to the category of the page.
+    \item[Community]  nodes are depicted as \textit{pie charts}. The individual sectors of a \textit{pie chart} represent the category makeup of the community members\footnote{Pages belonging into the community.}. 
+    \item[Page] nodes are portrayed as square shaped symbols. The colour of a square corresponds to the category of the page.
 \end{description}  
 
-Community-nodes can be double-clicked. After doing so, a new graph is shown. The data of this graph consist of the sub-communities of the clicked community. We call this process \textit{zooming}. If further zooming is not possible, the user reached the maximum zooming level. Each community may have a different maximum level, depending on the number of its pages and its structure. If a community at the maximum level has no siblings it is displayed in one of two ways. The community is decomposed into page-nodes if it contains at most 30 members.
+Community-nodes can be double-clicked. After doing so, a new graph is shown. The data of this graph consist of the sub-communities of the clicked community. We call this process \textit{zooming}. If further zooming is not possible, the user reached the maximum zooming level. Each community may have a different maximum level, depending on the number of its members and its structure. If a community at the maximum level has no siblings it is displayed in one of two ways. The community is decomposed into page-nodes if it contains at most 30 members. It is displayed as a community node otherwise. We call communities with at most 30 members or where zooming is possible \textit{decomposable}. 
 
 If the graph contains any isolated nodes a mock-community is displayed containing all isolates. This community cannot be zoomed into. 
 
@@ -221,13 +221,14 @@ The details of a community are visible in Figure \ref{MixedGraphBasic}. They con
 	\item [Categories] are the category makeup of the members. Each category is represented by its name and the number of members belonging into this category.
 \end{description}
 
-A link for the acquisition of further node information is present in the \textit{sidebar}. The link is labeled as \textit{details link} in Figure \ref{MixedGraphBasic}. If clicked, a pop-up window with detail-options is displayed. Details may include the \textit{title}, \textit{category}, page \textit{content} and \textit{links}, depending on the user's selection. \textit{Urls} of the page or pages are present by default. The pop-up window can be observed in Figure \ref{detailsOptionsPopup}. After selecting the options and clicking the \textit{download button}, a \textit{JSON file} with the desired information is downloaded.
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=0.9\textwidth]{Images/options_popup.png}
   \caption{The pop-up window with detail-options for selection. These options dictate which details will be included in the downloaded text file.}
   \label{detailsOptionsPopup}
 \end{figure} 
+
+A link for the acquisition of further node information is present in the \textit{sidebar}. The link is labeled as \textit{details link} in Figure \ref{MixedGraphBasic}. If clicked, a pop-up window with detail-options is displayed. Details may include the \textit{title}, \textit{category}, page \textit{content} and \textit{links}, depending on the user's selection. \textit{Urls} of the page or pages are present by default. The pop-up window can be observed in Figure \ref{detailsOptionsPopup}. After selecting the options and clicking the \textit{download button}, a \textit{JSON file} with the desired information is downloaded.
 
 \subsection{Technology overview}
 \textit{JavaScript} \cite{javaScript} (JS) is the most favoured programming language used for creating web applications \cite{jsGithut}. It is an interpreted language supported by all modern browsers. It is open-source and as such disposes of a considerable community with convenient documentation. \textit{JS} is not strongly typed and the code might therefore be complicated to read or navigate. For this reason the FE was written in \textit{TypeScript} (TS) \cite{typeScript} which is a superset of \textit{JS} with the advantage of being typed. There is a significant number of tools and libraries for implementing UI in a clean and timely manner created for both \textit{JS} and \textit{TS}. One of such tools is the framework \textit{React.js} \cite{react} (React). \textit{React} is one of the most favoured \textit{JS} frameworks \cite{reactPopularity}. The advantages of using \textit{React} are readable code and improved performance by managing the re-rendering of page elements.

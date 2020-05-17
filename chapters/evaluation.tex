@@ -24,7 +24,7 @@ We compared the two used algorithms LeA and LA. The following indicators were me
   \label{PartitionTimeComparison}
 \end{figure}
 
-The results are visualized in Figures \ref{CommunitiesComparison} and \ref{PartitionTimeComparison}. 
+The results following are visualized in Figures \ref{CommunitiesComparison} and \ref{PartitionTimeComparison}. 
 
 The LA detected 10,072 communities of which 9,915 were decomposable. The decomposable communities contained 33,600 pages in total. The number of disconnected sub-communities was 31. The discovering of all 10,072 communities took 59.7 seconds. The time it took to detect the communities on the highest level was about 14.7 seconds. 
 
@@ -32,12 +32,12 @@ The LeA detected a 7,857 communities of which 7,702 were decomposable. A total o
 
 We valued the number of decomposable communities detected by the LA. However, the disconnected sub-communities presented a problem in the correctness of the graph structure. Also, the LeA was significantly faster in detecting the communities. The algorithm used for the API responses was therefore the LeA. 
 
-We decided to adopt LeA for the visualization of the pages on the FE. 
+We decided to adopt the LeA for the visualization of the pages on the FE. 
 
 \section{Classification results}\label{classificationEvaluation}
 Three labeled data sets were created as was described in Section \ref{LearningDatasetImplementation}. Ten independent models were trained on each data set. Another ten models were trained with pretrained embeddings on the final samples. The accuracy results of these models are depicted in this section via box plots\footnote{A visual tool for the imaged summarization and comparison of data.} \cite{boxplot}. 
 
-The left and right sides of a box in the plot represent the first and the third quartiles respectively. The vertical line inside the box portrays the median. The plus symbol in the box is the mean. The lower and upper (here left and right) whisker ends represent the minimum and maximum values respectively. The name of each box plot corresponds to the utilized learning sample data set. Table \ref{categoryLegend} pairs the category shortcuts used in the plots with the actual category names. 
+The left and right sides of a box in the plot represent the first and the third quartiles respectively. The vertical line inside the box portrays the median. The plus symbol in the box is the mean. The lower and upper (here left and right) whisker ends represent the minimum and maximum values respectively. The name of each box plot corresponds to the utilized learning data set. Table \ref{categoryLegend} pairs the category shortcuts used in the plots with the actual category names. 
 
 %\begin{wraptable}[]{l}{0.6\textwidth}
 \begin{table}[H]
@@ -192,7 +192,7 @@ The more pronounced green cells with the bold text inform about the correctly pr
 \label{finalConfusionMatrix}
 \end{SCtable}
 
-The learning data set used for the model training was the final samples. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. The confusion matrix is shown in Table \ref{finalConfusionMatrix}. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
+The learning data set used for the model training was the final samples. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. The confusion matrix is shown in Table \ref{finalConfusionMatrix}. We compared the resulting accuracy to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
 
 The second classifying tool \cite{classificationProject} we compared our results to accomplished an accuracy of 96.6\%. This tool classified the data into 9 categories. The learning approach chosen was SLr. The learning data set contained 6831 pages. 
 
