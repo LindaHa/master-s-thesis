@@ -42,7 +42,7 @@ The left and right sides of a box in the plot represent the first and the third 
 %\begin{wraptable}[]{l}{0.6\textwidth}
 \begin{table}[H]
 \centering
-\scalebox{0.8}{
+\scalebox{0.9}{
 \begin{tabular}{@{}ll@{}}
 \toprule
 \rowcolor[HTML]{EEF9FB} 
@@ -54,7 +54,7 @@ The left and right sides of a box in the plot represent the first and the third 
 \rowcolor[HTML]{DAE8E5} 
 {\color[HTML]{000000} C3} & {\color[HTML]{000000} Drugs} \\
 \rowcolor[HTML]{EEF9FB} 
-{\color[HTML]{000000} C4} & {\color[HTML]{000000} Encyklopedia and knowledge} \\
+{\color[HTML]{000000} C4} & {\color[HTML]{000000} Encyclopedia and knowledge} \\
 \rowcolor[HTML]{DAE8E5} 
 {\color[HTML]{000000} C5} & {\color[HTML]{000000} Fake identity and hitmen} \\
 \rowcolor[HTML]{EEF9FB} 
@@ -64,7 +64,7 @@ The left and right sides of a box in the plot represent the first and the third 
 \rowcolor[HTML]{EEF9FB} 
 {\color[HTML]{000000} C8} & {\color[HTML]{000000} Guns} \\
 \rowcolor[HTML]{DAE8E5} 
-{\color[HTML]{000000} C9} & {\color[HTML]{000000} Hosting, Programming and Hacking} \\
+{\color[HTML]{000000} C9} & {\color[HTML]{000000} \begin{tabular}[c]{@{}c@{}}\rowcolor[HTML]{DAE8E5} Hosting, Programming\\\rowcolor[HTML]{DAE8E5} and Hacking\end{tabular}} \\
 \rowcolor[HTML]{EEF9FB} 
 {\color[HTML]{000000} C10} & {\color[HTML]{000000} Online Marketplace} \\
 \rowcolor[HTML]{DAE8E5} 
@@ -74,14 +74,36 @@ The left and right sides of a box in the plot represent the first and the third 
 \rowcolor[HTML]{DAE8E5} 
 {\color[HTML]{000000} C13} & {\color[HTML]{000000} Social} \\
 \rowcolor[HTML]{EEF9FB} 
-{\color[HTML]{000000} C14} & {\color[HTML]{000000} Web Catalogue} \\
-\rowcolor[HTML]{DAE8E5} 
-{\color[HTML]{000000} C15} & {\color[HTML]{000000} Illegal services and goods} \\
-\rowcolor[HTML]{EEF9FB} 
-{\color[HTML]{000000} C16} & {\color[HTML]{000000} Sexual Content} \\ \bottomrule
+{\color[HTML]{000000} C14} & {\color[HTML]{000000} Web Catalogue} \\ \bottomrule
 \end{tabular}
 }
-\caption{The alias-category lookup for the figures in Section \ref{classificationEvaluation}.\label{categoryLegend}}
+\hfill
+\scalebox{0.9}{
+\begin{tabular}{@{}ll@{}}
+\toprule
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} \textbf{Alias}} & {\color[HTML]{000000} \textbf{Category}} \\ \midrule
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} C6} & {\color[HTML]{000000} Finance and Fraud} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} C7} & {\color[HTML]{000000} Gambling} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} C9} & {\color[HTML]{000000} \begin{tabular}[c]{@{}c@{}}\rowcolor[HTML]{DAE8E5} Hosting, Programming\\\rowcolor[HTML]{DAE8E5} and Hacking\end{tabular}} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} C10} & {\color[HTML]{000000} Online Marketplace} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} C11} & {\color[HTML]{000000} Other} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} C13} & {\color[HTML]{000000} Social} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} C14} & {\color[HTML]{000000} Web Catalogue} \\ 
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} MC1} & {\color[HTML]{000000}\begin{tabular}[c]{@{}c@{}}\rowcolor[HTML]{EEF9FB} Illegal Services\\\rowcolor[HTML]{EEF9FB} and Goods\end{tabular}} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} MC2} & {\color[HTML]{000000} Sexual Content} \\ \bottomrule
+\end{tabular}
+}
+\caption{The initial and the final alias-category lookup for the figures in Section \ref{classificationEvaluation}. Category \textit{MC1} is composed of the categories \textit{C3, C5, C6,} and  \textit{C8}. Category \textit{MC2} was created by merging categories \textit{C2} and \textit{C12}. Categories \textit{C1} and \textit{C4} were grouped together with \textit{C13}.\label{finalCategoryLegend}}
 \end{table}
 
 
@@ -126,9 +148,51 @@ The left and right sides of a box in the plot represent the first and the third 
 \end{figure}
 
 \FloatBarrier
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{SCtable}[]
+\centering
+\resizebox{0.43\textwidth}{!}{%
+\begin{adjustbox}{angle=90}
+\begin{tabular}{@{}l|lllllllll@{}}
+\toprule
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} } & {\color[HTML]{000000} \textbf{C6}} & {\color[HTML]{000000} \textbf{C7}} & {\color[HTML]{000000} \textbf{C9}} & {\color[HTML]{000000} \textbf{MC1}} & {\color[HTML]{000000} \textbf{C10}} & {\color[HTML]{000000} \textbf{C11}} & {\color[HTML]{000000} \textbf{MC2}} & {\color[HTML]{000000} \textbf{C13}} & {\color[HTML]{000000} \textbf{C14}} \\ \midrule
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} \textbf{C6}} & \cellcolor[HTML]{75CF57}{\color[HTML]{000000} \textbf{123: 89.13\%}} & {\color[HTML]{000000} 2: 1.45\%} & {\color[HTML]{000000} 1: 0.72\%} & {\color[HTML]{000000} 2: 1.45\%} & {\color[HTML]{000000} 2: 1.45\%} & {\color[HTML]{000000} 1: 0.72\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 2: 1.45\%} & {\color[HTML]{000000} 5: 3.62\%} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} \textbf{C7}} & {\color[HTML]{000000} 3: 7.32\%} & \cellcolor[HTML]{A2D192}{\color[HTML]{000000} \textbf{38: 92.68\%}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} \textbf{C9}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & \cellcolor[HTML]{75CF57}{\color[HTML]{000000} \textbf{71: 80.68\%}} & {\color[HTML]{000000} 2: 2.27\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 6: 6.82\%} & {\color[HTML]{000000} 1: 1.14\%} & {\color[HTML]{000000} 4: 4.55\%} & {\color[HTML]{000000} 4: 4.55\%} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} \textbf{MC1}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 4: 16.00\%} & \cellcolor[HTML]{A2D192}{\color[HTML]{000000} \textbf{18: 72.00\%}} & {\color[HTML]{000000} 1: 4.00\%} & {\color[HTML]{000000} 1: 4.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 1: 4.00\%} & {\color[HTML]{000000} 0: 0.00\%} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} \textbf{C10}} & {\color[HTML]{000000} 3: 8.82\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 2: 5.88\%} & {\color[HTML]{000000} 3: 8.82\%} & \cellcolor[HTML]{75CF57}{\color[HTML]{000000} \textbf{20: 58.82\%}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 6: 17.65\%} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} \textbf{C11}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 9: 6.34\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & \cellcolor[HTML]{A2D192}{\color[HTML]{000000} \textbf{125: 88.03\%}} & {\color[HTML]{000000} 3: 2.11\%} & {\color[HTML]{000000} 2: 1.41\%} & {\color[HTML]{000000} 3: 2.11\%} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} \textbf{MC2}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 1: 0.41\%} & \cellcolor[HTML]{75CF57}{\color[HTML]{000000} \textbf{240: 98.36\%}} & {\color[HTML]{000000} 2: 0.82\%} & {\color[HTML]{000000} 1: 0.41\%} \\
+\rowcolor[HTML]{EEF9FB} 
+{\color[HTML]{000000} \textbf{C13}} & {\color[HTML]{000000} 1: 4.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 7: 28.00\%} & {\color[HTML]{000000} 2: 8.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 5: 20.00\%} & {\color[HTML]{000000} 0: 0.00\%} & \cellcolor[HTML]{A2D192}{\color[HTML]{000000} \textbf{9: 36.00\%}} & {\color[HTML]{000000} 1: 4.00\%} \\
+\rowcolor[HTML]{DAE8E5} 
+{\color[HTML]{000000} \textbf{C14}} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 2: 1.57\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 0: 0.00\%} & {\color[HTML]{000000} 4: 3.15\%} & {\color[HTML]{000000} 2: 1.57\%} & {\color[HTML]{000000} 1: 0.79\%} & \cellcolor[HTML]{75CF57}{\color[HTML]{000000} \textbf{118: 92.91\%}} \\ \bottomrule
+\end{tabular}
+\end{adjustbox}
+}
+\caption{The confusion matrix with the training results of the last model. The very left row depicts the correct categories \textit{y}. The header portrays the predicted categories $\hat{y}$. Let us call a specific correct category $y_i$ and a predicted category $\hat{y}_j$. 
+
+Each cell in the body of the table comprises an integer and a percentage value. The integer represents the number of  $y_i$ pages the model labeled as $\hat{y}_j$. The percentage represents the quantity of ${y_i}$ pages labeled as $\hat{y}_j$ with respect to all ${y_i}$ pages. 
+
+The more pronounced green cells with the bold text hold the correctly predicted values, meaning pages where $y_i$ equals $\hat{y}_j$.}
+\label{finalConfusionMatrix}
+\end{SCtable}
+
 The learning data set used for the model training was the final samples. The final model utilized in the BE for the categorization of the pages achieved 88.2\% accuracy. We compared these results to two other projects both from the year 2017. The ATOL \cite{atol} classification tool scored an accuracy of 96.4\%. ATOL was used for the categorization of the dark web into 3 categories - drugs, hacker, weapons. The learning data set contained 529 sites. 
 
-The second classifying tool \cite{classificationProject} we compared our results to accomplished an accuracy of 96.6\%. This tool classified the data into 9 categories. The learing approach chosen was SLr. The learning data set contained 6831 pages. 
+The second classifying tool \cite{classificationProject} we compared our results to accomplished an accuracy of 96.6\%. This tool classified the data into 9 categories. The learning approach chosen was SLr. The learning data set contained 6831 pages. 
 
 Both other projects have achieved a higher accuracy. However, ATOL recognized only 3 divergent categories which may explain the high accuracy. The second project adopted a more sophisticated CNN and model balancing. 
 
