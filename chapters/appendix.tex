@@ -66,9 +66,9 @@ We enclose a list of abbreviations with the meaning they represent.
 \chapter{Data attachment}
 The attachments enclosed in the thesis repository\footnote{https://is.muni.cz/auth/th/noh49/} contain three projects with dumps. The files have the following structure.
 \begin{description}
-    \item[\textbf{\texttt{Categorization}}] contains the source code for the sample data set acquisition and the classification of the manually labeled learning set. The labeled learning set without pages labeled as \textit{Sexual content} is also included. The pages of \textit{Sexual content} were removed because of moral and legal issues. In case of interest contact RNDr. Martin Stehlík, Ph.D. 
-    \item [\texttt{Dark-web-categorization-BE}] encompasses the source code of the BE application with the API. The \textit{Redis} and \textit{shelve} dumps are also present.
-    \item [\texttt{Dark-web-categorization}] holds the source code to the FE application. 
+    \item[\textbf{\texttt{Categorization}}] contains the source code for the sample data set acquisition, and for the classification of a labeled learning set. A manually labeled learning set is also included. However, the content of pages labeled as \textit{Sexual Content} was removed because of moral and legal issues. In case of interest contact RNDr. Martin Stehlík, Ph.D. 
+    \item [\texttt{Dark-web-categorization-BE}] encompasses the source code for the BE with the API. \textit{Redis} and \textit{shelve} dumps are also present. The \textit{shelve} dumps do not include the content of pages belonging into the category \textit{Sexual Content}.
+    \item [\texttt{Dark-web-categorization}] holds the source code to the FE. 
 \end{description}
 
 
@@ -80,7 +80,7 @@ In order to to train a classification model, the following prerequisites need to
     \item[Pip 3] \hfill
         \begin{itemize}
 	 \item \texttt{sudo apt update}
-            \item \texttt{apt-get install python3-pip}
+            \item \texttt{sudo apt-get install python3-pip}
         \end{itemize}
 \end{description}
 We now describe the steps to run the classification process itself.
@@ -92,13 +92,13 @@ We now describe the steps to run the classification process itself.
     \item Open one of the listed url addresses in a browser.
     \item In the browser, open \texttt{keras\_classification\_model} in the \texttt{training} directory.
     \item From the header menu select \textit{Cell} > \textit{Run all}
-    \item After the computation is finished the following files are dumped into the \texttt{models} directory.
+    \item After the computation is finished the following files are dumped into the \texttt{models} directory. This might take up to 30 minutes. 
         \begin{itemize}
             \item \texttt{DarkWebCategoryModel.h5}
             \item \texttt{DarkWebCategoryModel.json}
             \item \texttt{tokenizer.pickle}
         \end{itemize}
-The output of the last cell contains the achieved accuracy,  a confusion matrix and the index--category lookup table. The index--category lookup table must also be stored if the newly trained model is to be used.
+The output of the last cell contains the achieved accuracy, a confusion matrix and the index--category lookup table. The index--category lookup table must also be stored if the newly trained model is to be used.
 \end{itemize}
 
 
@@ -111,7 +111,8 @@ In order to run the web application the following prerequisites need to be insta
     \item[Pip 3] \hfill 
         \begin{itemize}
 	 \item \texttt{sudo apt update}
-            \item \texttt{apt-get install python3-pip}
+	 \item \texttt{sudo apt-get install build-essential libsystemd-dev bison byacc libigraph0-dev libtool m4 automake flex}
+            \item \texttt{sudo apt-get install python3-pip}
         \end{itemize}
     \item[Redis] \hfill 
         \begin{itemize}
@@ -119,10 +120,10 @@ In order to run the web application the following prerequisites need to be insta
         \end{itemize}
     \item[Npm 6.4.1 and Node.js 10.14.1] as we cannot guarantee our application to function correctly with different versions of Npm and Node.js
         \begin{itemize}
-            \item \texttt{sudo apt install node}
+            \item \texttt{sudo apt install nodejs}
             \item \texttt{sudo apt install npm 6.4.1}
             \item \texttt{npm install -g n}
-            \item \texttt{node n 10.14.1}
+            \item \texttt{n 10.14.1}
         \end{itemize}
 \end{description}
 
@@ -132,8 +133,8 @@ We describe how to run the BE on a Ubuntu system.
     \item Download the \texttt{Dark-web-categorization-BE.zip} file and unpack it.
     \item \texttt{cd Dark-web-categorization-BE}
     \item \texttt{pip3 install -r requirements.txt}
-    \item \texttt{redis-server} This command needs to be executed from the root directory \texttt{Dark-web-categorization-BE}.
-    \item \texttt{python manage.py runserver 0.0.0.0:8000}
+    \item \texttt{redis-server \&}  This command needs to be executed from the root directory \texttt{Dark-web-categorization-BE}.
+    \item \texttt{python3 manage.py runserver 0.0.0.0:8000}
 \end{itemize}
 To use new dumped classification files move them into the \texttt{models} directory located in the \texttt{Dark-web-categorization-BE} root directory. The index-category lookup table needs to replace the table in \texttt{Dark-web-categorization-BE/api/classification.py}.
 
@@ -142,7 +143,7 @@ We describe how to run the FE on Ubuntu systems.
 \begin{itemize}
     \item Download the \texttt{Dark-web-categorization.zip} file and unpack it.
     \item \texttt{cd Dark-web-categorization}
-    \item \texttt{npm install --no-optional}
+    \item \texttt{npm install -{}-no-optional}
     \item \texttt{npm run start}
 \end{itemize}
 
